@@ -1,0 +1,4 @@
+[submodule "src/main/java/Java-Libs"]
+	path = src/main/java/Java-Libs
+	url = https://github.com/frc5587/Java-Libs.git
+	branch = game-changers
