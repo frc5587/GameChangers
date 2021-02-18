@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
@@ -25,6 +26,10 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    private final Joystick joy = new Joystick(0);
+    private final XboxController xb = new XboxController(0);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -35,7 +40,24 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    var leftBumper = new JoystickButton(xb, XboxController.Button.kBumperLeft.value);
+    var rightBumper = new JoystickButton(xb, XboxController.Button.kBumperRight.value);
+
+    // Conveyor w/o intake
+    rightBumper.whileHeld(() -> {
+      conveyor.moveConveyorForward();
+    }).whenReleased(() -> {
+      conveyor.stopConveyorMovement();
+    });
+    leftBumper.whileHeld(() -> {
+      conveyor.moveConveyorBackward();
+    }).whenReleased(() -> {
+      conveyor.stopConveyorMovement();
+    });
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
