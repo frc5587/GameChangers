@@ -234,6 +234,30 @@ public class Drivetrain extends PIDSubsystem {
         odometry.resetPosition(new Pose2d(), new Rotation2d());
     }
 
+    // TODO: does this work?
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        odometry.resetPosition(pose, ahrs.getRotation2d());
+    }
+
+    /**
+     * Gets the average distance of the two encoders.
+     *
+     * @return the average of the two encoder readings
+     */
+    public double getAverageEncoderDistance() {
+        return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
+    }
+
+    /**
+     * Returns the turn rate of the robot.
+     *
+     * @return The turn rate of the robot, in degrees per second
+     */
+    public double getTurnRate() {
+        return -ahrs.getRate();
+    }
+
     public void setIdleMode(IdleMode idleMode) {
         leftLeader.setIdleMode(idleMode);
         leftFollower.setIdleMode(idleMode);
