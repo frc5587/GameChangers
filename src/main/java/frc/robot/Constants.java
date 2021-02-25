@@ -29,8 +29,8 @@ public final class Constants {
     }
 
     public static class DrivetrainConstants {
-        public static final int LEFT_LEADER = 20;
-        public static final int LEFT_FOLLOWER = 21;
+        public static final int LEFT_LEADER = 21;
+        public static final int LEFT_FOLLOWER = 20;
 
         public static final int RIGHT_LEADER = 10;
         public static final int RIGHT_FOLLOWER = 11;
