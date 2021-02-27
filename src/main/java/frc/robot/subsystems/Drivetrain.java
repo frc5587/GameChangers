@@ -23,12 +23,12 @@ import frc.robot.Constants.DrivetrainConstants;
 
 public class Drivetrain extends PIDSubsystem {
     private final CANSparkMax leftLeader = new CANSparkMax(DrivetrainConstants.LEFT_LEADER, MotorType.kBrushless);
-    // private final CANSparkMax leftFollower = new CANSparkMax(DrivetrainConstants.LEFT_FOLLOWER, MotorType.kBrushless);
+    private final CANSparkMax leftFollower = new CANSparkMax(DrivetrainConstants.LEFT_FOLLOWER, MotorType.kBrushless);
     private final CANSparkMax rightLeader = new CANSparkMax(DrivetrainConstants.RIGHT_LEADER, MotorType.kBrushless);
-    // private final CANSparkMax rightFollower = new CANSparkMax(DrivetrainConstants.RIGHT_FOLLOWER, MotorType.kBrushless);
+    private final CANSparkMax rightFollower = new CANSparkMax(DrivetrainConstants.RIGHT_FOLLOWER, MotorType.kBrushless);
 
-    private final SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftLeader);
-    private final SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightLeader);
+    private final SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftLeader, leftFollower);
+    private final SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightLeader, rightFollower);
 
     private final CANEncoder leftEncoder = leftLeader.getAlternateEncoder(AlternateEncoderType.kQuadrature,
             DrivetrainConstants.TICKS_PER_REV);
@@ -55,9 +55,9 @@ public class Drivetrain extends PIDSubsystem {
                         DrivetrainConstants.TURN_FPID.kD));
 
         leftLeader.restoreFactoryDefaults();
-        // leftFollower.restoreFactoryDefaults();
+        leftFollower.restoreFactoryDefaults();
         rightLeader.restoreFactoryDefaults();
-        // rightFollower.restoreFactoryDefaults();
+        rightFollower.restoreFactoryDefaults();
 
         setIdleMode(IdleMode.kCoast);
 
@@ -67,14 +67,14 @@ public class Drivetrain extends PIDSubsystem {
         rightEncoder.setInverted(DrivetrainConstants.RIGHT_ENCODER_INVERTED);
 
         leftLeader.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
-        // leftFollower.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
+        leftFollower.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
         rightLeader.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
-        // rightFollower.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
+        rightFollower.setSmartCurrentLimit(DrivetrainConstants.SMART_CURRENT_LIMIT);
 
         leftLeader.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
-        // leftFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
+        leftFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
         rightLeader.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
-        // rightFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
+        rightFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
 
         var currentAngle = Rotation2d.fromDegrees(getHeading360());
         this.odometry = new DifferentialDriveOdometry(currentAngle);
@@ -261,9 +261,9 @@ public class Drivetrain extends PIDSubsystem {
 
     public void setIdleMode(IdleMode idleMode) {
         leftLeader.setIdleMode(idleMode);
-        // leftFollower.setIdleMode(idleMode);
+        leftFollower.setIdleMode(idleMode);
         rightLeader.setIdleMode(idleMode);
-        // rightFollower.setIdleMode(idleMode);
+        rightFollower.setIdleMode(idleMode);
     }
 
     @Override
