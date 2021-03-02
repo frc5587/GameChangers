@@ -26,15 +26,20 @@ public final class Constants {
         public static final JRAD SHOOTER_JRAD = new JRAD(0.001, 0, 1);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
+        public static final double SHOOTER_HEIGHT = 1;
+        public static final double GOAL_HEIGHT = 2.502;
+        public static final double G = 9.806;
+        public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
+
     }
 
     public static class LimelightConstants {
         public static final double LIMELIGHT_HEIGHT = 1;                          // TODO: make correct
         public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(30);  // TODO: make correct
 
-        public static final double GOAL_HEIGHT_METERS = Units.inchesToMeters(97.5);
-        public static final double INNER_OUTER_GOAL_DISTANCE_METERS = Units.inchesToMeters(29.25);
+        public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
+        public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
     
-        public static final double G_METERS_PER_SECOND_SQUARED = 9.81;
+        public static final double G = ShooterConstants.G;
     }
 }

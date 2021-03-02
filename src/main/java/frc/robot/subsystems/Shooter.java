@@ -137,7 +137,7 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * If JRAD is disable, this controls the percent output of the shooter
+     * If JRAD is disabled, this controls the percent output of the shooter
      * 
      * @param throttle percent output - [-1, 1]
      */
