@@ -87,12 +87,13 @@ public class RobotContainer {
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
+        // Pass through these two interior wayposints, making an 's' curve path
         // List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        List.of(),
+        List.of(new Translation2d(10.211, 0),
+        new Translation2d(10.211, -10.97)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
+        new Pose2d(0, -10.97, new Rotation2d(0)),
         config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose,
