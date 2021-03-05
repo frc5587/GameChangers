@@ -9,6 +9,7 @@ import org.frc5587.lib.control.DeadbandXboxController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;

@@ -32,6 +32,12 @@ public final class Constants {
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
         public static final double GEAR_RATIO = 16/18;
 
+        public static class RegressionConstants {
+            public static final double U = 106.002;
+            public static final double P = 141188;
+            public static final double N = 19.0896;
+        }
+
     }
 
     public static class LimelightConstants {

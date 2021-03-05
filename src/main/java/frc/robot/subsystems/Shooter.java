@@ -58,8 +58,6 @@ public class Shooter extends SubsystemBase {
         // log();
         motorFeedbackController.sendDebugInfo();
         // motorTwoController.sendDebugInfo();
-        SmartDashboard.putNumber("velocity 1", encoderOne.getVelocity());
-        SmartDashboard.putNumber("velocity 2", encoderTwo.getVelocity());
 
         if (enabled) {
             SmartDashboard.putNumber("Setpoint RPM", setpointVelocity);
@@ -68,23 +66,10 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * Returns that average motor speed between the two shooter motors
+     * Sets the voltage. The negative is to correct the direction
      * 
-     * @return average velocity - ROTATIONS PER SECOND
-    //  */
-    // public double getAvgShooterSpeed() {
-    //     return (encoderOne.getVelocity() + encoderTwo.getVelocity()) / 2;
-    // }
-
-    /**
-     * Returns the velocity of the leader motor
-     * 
-     * @return velocity - ROTATIONS PER SECOND
+     * @param voltage volts, basically caps at 12
      */
-    // public double getLeaderShooterSpeed() {
-    //     return encoderOne.getVelocity();
-    // }
-
     public void setVoltage(double voltage) {
         motorOne.setVoltage(-voltage);
     }
