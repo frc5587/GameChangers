@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ShooterConstants;
@@ -16,10 +17,10 @@ public class Shooter extends SubsystemBase {
     private final CANEncoder encoderOne = motorOne.getEncoder();
     private final CANEncoder encoderTwo = motorTwo.getEncoder();
 
-    private final ShooterFeedbackController motorFeedbackController = new ShooterFeedbackController(ShooterConstants.SHOOTER_JRAD, this::getLeaderShooterSpeed);
+    private final ShooterFeedbackController motorFeedbackController = new ShooterFeedbackController(ShooterConstants.SHOOTER_JRAD, this::getVelocityRPM);
 
     private double setpointVelocity = 0;
-    private boolean enabled = true;
+    private boolean enabled = false;
     private double lastVelocity = 0;
     private double nowVelocity = 0;
 
@@ -52,12 +53,16 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         lastVelocity = nowVelocity;
-        nowVelocity = encoderOne.getVelocity();
+        nowVelocity = getVelocityRPM();
+        SmartDashboard.putNumber("Velocity RPM", nowVelocity);
         // log();
         motorFeedbackController.sendDebugInfo();
         // motorTwoController.sendDebugInfo();
+        SmartDashboard.putNumber("velocity 1", encoderOne.getVelocity());
+        SmartDashboard.putNumber("velocity 2", encoderTwo.getVelocity());
 
         if (enabled) {
+            SmartDashboard.putNumber("Setpoint RPM", setpointVelocity);
             setVoltage(motorFeedbackController.setSetpointAndCalculate(setpointVelocity));
         }
     }
@@ -66,31 +71,22 @@ public class Shooter extends SubsystemBase {
      * Returns that average motor speed between the two shooter motors
      * 
      * @return average velocity - ROTATIONS PER SECOND
-     */
-    public double getAvgShooterSpeed() {
-        return (encoderOne.getVelocity() + encoderTwo.getVelocity()) / 2;
-    }
+    //  */
+    // public double getAvgShooterSpeed() {
+    //     return (encoderOne.getVelocity() + encoderTwo.getVelocity()) / 2;
+    // }
 
     /**
      * Returns the velocity of the leader motor
      * 
      * @return velocity - ROTATIONS PER SECOND
      */
-    public double getLeaderShooterSpeed() {
-        return encoderOne.getVelocity();
-    }
-
-    /**
-     * Returns the velocity of the follower motor
-     * 
-     * @return velocity - ROTATIONS PER SECOND
-     */
-    public double getFollowerShooterSpeed() {
-        return encoderTwo.getVelocity();
-    }
+    // public double getLeaderShooterSpeed() {
+    //     return encoderOne.getVelocity();
+    // }
 
     public void setVoltage(double voltage) {
-        motorOne.setVoltage(voltage);
+        motorOne.setVoltage(-voltage);
     }
 
     /**
@@ -98,17 +94,12 @@ public class Shooter extends SubsystemBase {
      * 
      * @return velocity - ROTATIONS PER SECOND
      */
-    public double getMotorOneVelocity() {
-        return encoderOne.getVelocity();
+    public double getVelocityRPS() {
+        return -encoderOne.getVelocity() / 60;
     }
 
-    /**
-     * Gets the velocity of the second motor
-     * 
-     * @return velocity - ROTATIONS PER SECOND
-     */
-    public double getMotorTwoVelocity() {
-        return encoderTwo.getVelocity();
+    public double getVelocityRPM() {
+        return -encoderOne.getVelocity();
     }
 
     /**
@@ -130,7 +121,7 @@ public class Shooter extends SubsystemBase {
     /**
      * Sets a new velocity setpoint for the shooter
      * 
-     * @param setpointVelocity new setpoint - ROTATIONS PER SECOND
+     * @param setpointVelocity new setpoint - ROTATIONS PER MINUTE
      */
     public void setVelocity(double setpointVelocity) {
         this.setpointVelocity = setpointVelocity;

@@ -20,16 +20,17 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public final class Constants {
     public static class ShooterConstants {
-        public static final int MOTOR_ONE = 30;
-        public static final int MOTOR_TWO = 31;
+        public static final int MOTOR_ONE = 10;
+        public static final int MOTOR_TWO = 20;
 
-        public static final JRAD SHOOTER_JRAD = new JRAD(0.001, 0, 1);
+        public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
         public static final double GOAL_HEIGHT = 2.502;
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
+        public static final double GEAR_RATIO = 16/18;
 
     }
 

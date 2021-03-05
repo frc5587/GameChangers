@@ -69,7 +69,7 @@ public class ShooterFeedbackController {
 
   /**
    * Sets the setpoints, the calculates the PID based on the current speed of the
-   * arm, which is retrieved via the DoubleSupplier
+   * shooter, which is retrieved via the DoubleSupplier
    * 
    * @param setpointVelocityRPM setpoint - ROTATIONS PER MINUTE
    * @return voltage to set the shooter - VOLTS
