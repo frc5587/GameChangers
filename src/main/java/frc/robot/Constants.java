@@ -35,7 +35,7 @@ public final class Constants {
         public static final int RIGHT_LEADER = 10;
         public static final int RIGHT_FOLLOWER = 11;
 
-        public static final boolean LEFT_SIDE_INVERTED = false;
+        public static final boolean LEFT_SIDE_INVERTED = true;
         public static final boolean RIGHT_SIDE_INVERTED = true;
         public static final boolean LEFT_ENCODER_INVERTED = false;
         public static final boolean RIGHT_ENCODER_INVERTED = true;

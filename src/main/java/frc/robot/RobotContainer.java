@@ -25,6 +25,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RamseteCommandWrapper;
+import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
@@ -74,6 +76,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // create voltage constraint
+
+    // TODO: check to see if this is relevant
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS, DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
             DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
@@ -88,12 +92,14 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior wayposints, making an 's' curve path
-        // List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        List.of(new Translation2d(10.211, 0),
-        new Translation2d(10.211, -10.97)),
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // List.of(new Translation2d(10.211, 0),
+        // new Translation2d(10.211, -10.97)),
+        // List.of(new Tra),
         // End 3 meters straight ahead of where we started, facing forward
         // Pass config
-        new Pose2d(0, -10.97, new Rotation2d(0)),
+        // new Pose2d(0, -10.97, new Rotation2d(0)),
+        new Pose2d(5, 0, new Rotation2d(0)),
         config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose,
@@ -106,12 +112,16 @@ public class RobotContainer {
         // RamseteCommand passes volts to the callback
         drivetrain::tankLRVolts, drivetrain);
 
-    // Reset odometry to the starting pose of the trajectory.
+    // // Reset odometry to the starting pose of the trajectory.
     drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
 
-    // Run path following command, then stop at the end.
+    // // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> drivetrain.tankLRVolts(0, 0));
 
+    // Trajectory ex
+
+    // return new RamseteCommandWrapper(drivetrain, exampleTrajectory);
+    // return new RamseteCommandWrapper(drivetrain, AutoPaths.test);
     // An ExampleCommand will run in autonomous
     // return m_autoCommand;
   }
