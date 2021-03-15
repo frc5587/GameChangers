@@ -4,27 +4,34 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
 
-  private final TalonSRX conveyorMotor = new TalonSRX(Constants.ConveyorConstants.CONVEYOR_MOTOR);
+  private final CANSparkMax conveyorMotor = new CANSparkMax(Constants.ConveyorConstants.CONVEYOR_MOTOR, MotorType.kBrushless);
 
   /** Creates a new Conveyor. */
   public Conveyor() {
-    conveyorMotor.setInverted(true);
+    // conveyorMotor.setInverted(true);
+    conveyorMotor.restoreFactoryDefaults();
+    conveyorMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public void moveConveyorForward() {
-    conveyorMotor.set(ControlMode.PercentOutput, Constants.ConveyorConstants.CONVEYOR_THROTTLE);
+    conveyorMotor.set(Constants.ConveyorConstants.CONVEYOR_THROTTLE);
   }
 
   public void moveConveyorBackward() {
-    conveyorMotor.set(ControlMode.PercentOutput, -Constants.ConveyorConstants.CONVEYOR_THROTTLE);
+    conveyorMotor.set(-Constants.ConveyorConstants.CONVEYOR_THROTTLE);
   }
 
   public void stopConveyorMovement() {
-    conveyorMotor.set(ControlMode.PercentOutput, 0);
+    conveyorMotor.set(0);
   }
 
 }
