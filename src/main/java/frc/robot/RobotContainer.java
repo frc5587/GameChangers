@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Conveyor;
@@ -15,57 +14,55 @@ import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final Conveyor conveyor = new Conveyor();
+    // The robot's subsystems and commands are defined here...
+    private final Conveyor conveyor = new Conveyor();
 
-  private final DeadbandJoystick joy = new DeadbandJoystick(0);
-  private final DeadbandXboxController xb = new DeadbandXboxController(0);
+    private final DeadbandJoystick joy = new DeadbandJoystick(0);
+    private final DeadbandXboxController xb = new DeadbandXboxController(0);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
 
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+        // Configure the button bindings
+        configureButtonBindings();
+    }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by instantiating a {@link GenericHID} or one of its subclasses
+     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+     * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
 
-    var leftBumper = new JoystickButton(xb, XboxController.Button.kBumperLeft.value);
-    var rightBumper = new JoystickButton(xb, XboxController.Button.kBumperRight.value);
+        var leftBumper = new JoystickButton(xb, XboxController.Button.kBumperLeft.value);
+        var rightBumper = new JoystickButton(xb, XboxController.Button.kBumperRight.value);
 
-    // Conveyor w/o intake
-    rightBumper.whileHeld(() -> {
-      conveyor.moveConveyorForward();
-    }).whenReleased(() -> {
-      conveyor.stopConveyorMovement();
-    });
-    leftBumper.whileHeld(() -> {
-      conveyor.moveConveyorBackward();
-    }).whenReleased(() -> {
-      conveyor.stopConveyorMovement();
-    });
+        // Conveyor w/o intake
+        rightBumper.whileHeld(() -> {conveyor.intakeConveyor();}, conveyor)
+            .whenReleased(() -> {conveyor.stopIntakeConveyor();}, conveyor);
 
-  }
+        leftBumper.whileHeld(() -> {conveyor.intakeConveyorReverse();}, conveyor)
+            .whenReleased(() -> {conveyor.stopIntakeConveyor();}, conveyor);
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
-  }
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return null;
+    }
 }

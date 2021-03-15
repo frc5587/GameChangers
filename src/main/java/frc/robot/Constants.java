@@ -13,10 +13,12 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
     public static final class ConveyorConstants {
-        public static final double CONVEYOR_THROTTLE = 0.75;
-        public static final int CONVEYOR_MOTOR = 50;
+        public static final double CONVEYOR_THROTTLE_FRONT = 0.75;
+        public static final double CONVEYOR_THROTTLE_BACK = 0.75;
+
+        public static final int CONVEYOR_MOTOR_FRONT = 50;
+        public static final int CONVEYOR_MOTOR_BACK = 51;
     }
 
 }
