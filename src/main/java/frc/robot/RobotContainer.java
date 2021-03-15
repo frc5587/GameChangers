@@ -8,8 +8,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import org.frc5587.lib.control.DeadbandJoystick;
+import org.frc5587.lib.control.DeadbandXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,11 +29,11 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final DeadbandJoystick joy = new DeadbandJoystick(0);
+  private final DeadbandXboxController xb = new DeadbandXboxController(0);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    private final Joystick joy = new Joystick(0);
-    private final XboxController xb = new XboxController(0);
 
     // Configure the button bindings
     configureButtonBindings();
