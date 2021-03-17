@@ -25,7 +25,7 @@ public class RobotContainer {
     private final Conveyor conveyor = new Conveyor();
 
     private final DeadbandJoystick joy = new DeadbandJoystick(0);
-    private final DeadbandXboxController xb = new DeadbandXboxController(0);
+    private final DeadbandXboxController xb = new DeadbandXboxController(1);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -44,8 +44,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
-        var leftBumper = new JoystickButton(xb, XboxController.Button.kBumperLeft.value);
-        var rightBumper = new JoystickButton(xb, XboxController.Button.kBumperRight.value);
+        var leftBumper = new JoystickButton(xb, DeadbandXboxController.Button.kBumperLeft.value);
+        var rightBumper = new JoystickButton(xb, DeadbandXboxController.Button.kBumperRight.value);
 
         // Conveyor w/o intake
         rightBumper.whileHeld(() -> {conveyor.intakeConveyor();}, conveyor)
