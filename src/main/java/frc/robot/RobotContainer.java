@@ -4,19 +4,22 @@
 
 package frc.robot;
 
+import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PowercellDetector;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,11 +32,16 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Shooter shooter = new Shooter();
     private final Limelight limelight = new Limelight();
+    private final PowercellDetector powercellDetector = new PowercellDetector();
+    private final Drivetrain drivetrain = new Drivetrain();
 
+    private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
     private final Shoot shoot = new Shoot(shooter, limelight);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
+    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain);
+
 
 
     /**
@@ -54,8 +62,10 @@ public class RobotContainer {
         shooter.setDefaultCommand(simpleShoot);
         // Trigger rightJoy = new Trigger(() -> xboxController.getY(Hand.kRight) != 0);
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
+        JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
 
         aButton.whileActiveContinuous(shoot);
+        joystickTrigger.whileActiveContinuous(moveToPowercell);
     }
 
     /**
