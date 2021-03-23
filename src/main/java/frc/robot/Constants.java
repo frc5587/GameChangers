@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public final class Constants {
     public static class ShooterConstants {
-        public static final int MOTOR_ONE = 10;
-        public static final int MOTOR_TWO = 20;
+        public static final int MOTOR_ONE = 30;
+        public static final int MOTOR_TWO = 31;
 
         public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
 
