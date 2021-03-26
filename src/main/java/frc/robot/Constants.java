@@ -29,8 +29,8 @@ public final class Constants {
     }
 
     public static class DrivetrainConstants {
-        public static final int LEFT_LEADER = 21;
-        public static final int LEFT_FOLLOWER = 20;
+        public static final int LEFT_LEADER = 20;
+        public static final int LEFT_FOLLOWER = 21;
 
         public static final int RIGHT_LEADER = 10;
         public static final int RIGHT_FOLLOWER = 11;
@@ -54,11 +54,11 @@ public final class Constants {
         public static final double TURN_PID_UPDATE_PERIOD_SEC = 0.010;
 
         // Values from characterisation
-        public static final double KS_VOLTS = 0.181;
-        public static final double KV_VOLT_SECONDS_PER_METER = 0.337;
-        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0179;
+        public static final double KS_VOLTS = 0.211;
+        public static final double KV_VOLT_SECONDS_PER_METER = 0.324;
+        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0307;
         public static final double TRACK_WIDTH_METERS = 0.686863135; // Empirically determined fixed
-        public static final double RAMSETE_KP_DRIVE_VEL = .701; // Raw from charact. fixed
+        public static final double RAMSETE_KP_DRIVE_VEL = 1.23; // Raw from charact. fixed
 
         // Basic differential drivetrain kinematics constants
         public static final int TICKS_PER_REV = 8192;
