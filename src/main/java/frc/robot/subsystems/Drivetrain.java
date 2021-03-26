@@ -93,8 +93,10 @@ public class Drivetrain extends PIDSubsystem {
         SmartDashboard.putNumber("left enc", leftEncoder.getPosition());
         SmartDashboard.putNumber("right enc", rightEncoder.getPosition());
         SmartDashboard.putNumber("gyro", ahrs.getAngle());
+        SmartDashboard.putNumber("thing that max wants (x)", ahrs.getDisplacementX());
+        SmartDashboard.putNumber("thing that max wants (y)", ahrs.getDisplacementY());
         // System.out.println("ahrs: " + ahrs.getAngle());
-        System.out.println("lv: " + leftEncoder.getVelocity() + " rv: " + rightEncoder.getVelocity());
+        // System.out.println("lv: " + leftEncoder.getPosition() + " rv: " + rightEncoder.getPosition());
     }
 
     public void arcadeDrive(double throttle, double curve) {
@@ -298,6 +300,9 @@ public class Drivetrain extends PIDSubsystem {
         // Update the pose
         var gyroAngle = Rotation2d.fromDegrees(getHeading360());
         odometry.update(gyroAngle, getLeftPositionMeters(), getRightPositionMeters());
+        var translation = odometry.getPoseMeters().getTranslation();
+        SmartDashboard.putNumber("tx", translation.getX());
+        SmartDashboard.putNumber("ty", translation.getY());
 
         // Log the pose
         poseHistory.put(Timer.getFPGATimestamp(), getPose());

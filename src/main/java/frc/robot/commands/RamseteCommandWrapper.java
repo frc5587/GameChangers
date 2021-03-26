@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Transform2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -84,8 +85,34 @@ public class RamseteCommandWrapper extends CommandBase {
      * @param gotoY      y coordinate to go to - METERS
      * @param finalAngle the final angle to face - RADIANS
      */
-    public RamseteCommandWrapper(Drivetrain drivetrain, double gotoX, double gotoY, double finalAngle) {
-        DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+    // public RamseteCommandWrapper(Drivetrain drivetrain, double gotoX, double
+    // gotoY, double finalAngle) {
+    // DifferentialDriveVoltageConstraint autoVoltageConstraint = new
+    // DifferentialDriveVoltageConstraint(
+    // new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
+    // DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
+    // DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+    // DrivetrainConstants.DRIVETRAIN_KINEMATICS, 10);
+
+    // TrajectoryConfig config = new
+    // TrajectoryConfig(AutoConstants.MAX_VELOCITY_METERS_PER_SECOND,
+    // AutoConstants.MAX_ACCEL_METERS_PER_SECOND_SQUARED)
+    // .setKinematics(DrivetrainConstants.DRIVETRAIN_KINEMATICS).addConstraint(autoVoltageConstraint);
+
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    // // Start at the origin facing the +X direction
+    // new Pose2d(0, 0, new Rotation2d(0)), List.of(), new Pose2d(gotoX, gotoY, new
+    // Rotation2d(finalAngle)),
+    // config);
+
+    // this.drivetrain = drivetrain;
+    // this.trajectory = trajectory;
+    // }
+    // this.trajectory = trajectory;
+    // }
+
+    public RamseteCommandWrapper(Drivetrain drivetrain, Pose2d start, List<Translation2d> path, Pose2d end) {
+        var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
                 new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS, DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
                         DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
                 DrivetrainConstants.DRIVETRAIN_KINEMATICS, 10);
@@ -94,13 +121,8 @@ public class RamseteCommandWrapper extends CommandBase {
                 AutoConstants.MAX_ACCEL_METERS_PER_SECOND_SQUARED)
                         .setKinematics(DrivetrainConstants.DRIVETRAIN_KINEMATICS).addConstraint(autoVoltageConstraint);
 
-        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)), List.of(), new Pose2d(gotoX, gotoY, new Rotation2d(finalAngle)),
-                config);
-
+        this.trajectory = TrajectoryGenerator.generateTrajectory(start, path, end, config);
         this.drivetrain = drivetrain;
-        this.trajectory = trajectory;
     }
 
     // Called when the command is initially scheduled.
@@ -111,13 +133,9 @@ public class RamseteCommandWrapper extends CommandBase {
 
         // Start the pathFollowCommand
         if (trajectory != null) {
-            // Shift the trajectory to start at to the robot's current position
-            var currentPose = drivetrain.getPose();
-            var transform = new Transform2d(currentPose.getTranslation(), currentPose.getRotation());
-            var shiftedTrajectory = trajectory.transformBy(transform);
 
             // Create the RamseteCommand based on the drivetrain's constants
-            var ramsete = new RamseteCommand(shiftedTrajectory, drivetrain::getPose,
+            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
                     new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
                     new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
                             DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
@@ -128,8 +146,10 @@ public class RamseteCommandWrapper extends CommandBase {
                     // RamseteCommand passes volts to the callback
                     drivetrain::tankLRVolts, drivetrain);
 
+            drivetrain.resetOdometry(trajectory.getInitialPose());
+
             // Run path following command, then stop at the end
-            pathFollowCommand = ramsete;// .andThen(drivetrain::stop, drivetrain);
+            pathFollowCommand = ramsete;
 
             pathFollowCommand.schedule();
         }
