@@ -5,8 +5,10 @@
 package frc.robot;
 
 import org.frc5587.lib.pid.FPID;
+import org.frc5587.lib.pid.JRAD;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -69,5 +71,36 @@ public final class Constants {
 
         // Lag compensation
         public static final int HISTORY_LIMIT = 32;
+    }
+
+    public static class ShooterConstants {
+        public static final int MOTOR_ONE = 30;
+        public static final int MOTOR_TWO = 21;
+
+        public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
+
+        public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
+        public static final double SHOOTER_HEIGHT = 1;
+        public static final double GOAL_HEIGHT = 2.502;
+        public static final double G = 9.806;
+        public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
+        public static final double GEAR_RATIO = 16/18;
+
+        public static class RegressionConstants {
+            public static final double U = 106.002;
+            public static final double P = 141188;
+            public static final double N = 19.0896;
+        }
+
+    }
+
+    public static class LimelightConstants {
+        public static final double LIMELIGHT_HEIGHT = 1;                          // TODO: make correct
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(30);  // TODO: make correct
+
+        public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
+        public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
+    
+        public static final double G = ShooterConstants.G;
     }
 }
