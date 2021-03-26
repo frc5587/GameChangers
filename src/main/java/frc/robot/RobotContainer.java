@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.RamseteCommandWrapper;
+import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -55,18 +56,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    RamseteCommandWrapper ramseteCommand = new RamseteCommandWrapper(
-        this.drivetrain, 
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(5.5, -5.5), new Translation2d(11, 0), new Translation2d(11-1.37, -5.5)),
-        new Pose2d(0, 0, new Rotation2d(0)));
+    // RamseteCommandWrapper ramseteCommand = new RamseteCommandWrapper(
+    //     this.drivetrain, 
+    //     new Pose2d(0, 0, new Rotation2d(0)),
+    //     List.of(new Translation2d(5.5, -5.5), new Translation2d(11, 0), new Translation2d(11-1.37, -5.5)),
+    //     new Pose2d(0, 0, new Rotation2d(0)));
 
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> drivetrain.tankLRVolts(0, 0));
+    // // Run path following command, then stop at the end.
+    // return ramseteCommand.andThen(() -> drivetrain.tankLRVolts(0, 0));
 
     // Trajectory ex
 
     // return new RamseteCommandWrapper(drivetrain, exampleTrajectory);
-    // return new RamseteCommandWrapper(drivetrain, AutoPaths.test);
+    return new RamseteCommandWrapper(drivetrain, AutoPaths.funky);
   }
 }
