@@ -86,14 +86,14 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior wayposints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        List.of(new Translation2d(5.5, -5.5), new Translation2d(11, 0), new Translation2d(11-1.37, -5.5)),
         // List.of(new Translation2d(10.211, 0),
         // new Translation2d(10.211, -10.97)),
         // List.of(),
         // End 3 meters straight ahead of where we started, facing forward
         // Pass config
         // new Pose2d(0, -10.97, new Rotation2d(0)),
-        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
         config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose,
