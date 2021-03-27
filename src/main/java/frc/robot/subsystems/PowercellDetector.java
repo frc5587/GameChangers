@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PowercellDetector extends SubsystemBase {
     private NetworkTable detectorTable = NetworkTableInstance.getDefault().getTable("powercellDetector");
+    // private NetworkTable detectorTable = NetworkTableInstance.create().getTable("powercellDetector");
+    // private NetworkTable detectorTable;
     private NetworkTableEntry tn = detectorTable.getEntry("tn");
     private NetworkTableEntry tr = detectorTable.getEntry("tr");
     private NetworkTableEntry tx = detectorTable.getEntry("tx");
@@ -32,6 +34,7 @@ public class PowercellDetector extends SubsystemBase {
      * @return if powercells are seen
      */
     public boolean seesPowercell() {
+        System.out.println(tn.exists());
         return numPowercells() > 0;
     }
 

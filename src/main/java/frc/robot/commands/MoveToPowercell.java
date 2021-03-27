@@ -29,7 +29,7 @@ public class MoveToPowercell extends CommandBase {
             double powercellY = powercellDetector.getPowercellY();
             double angle = powercellDetector.getHorizontalAngleRadians();
             
-            ramseteCommand = new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(), new Pose2d(powercellX, powercellY, new Rotation2d(angle)));
+            ramseteCommand = new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(), new Pose2d(powercellX, -powercellY, new Rotation2d(-angle)));
             ramseteCommand.schedule();
         } else {
             ramseteCommand = null;
