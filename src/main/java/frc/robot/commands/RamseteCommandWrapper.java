@@ -142,7 +142,7 @@ public class RamseteCommandWrapper extends CommandBase {
   }
 
   public enum AutoPaths {
-    test;
+    test, funky;
 
     /**
      * Get the path to the corresponding path JSON file (generated with PathWeaver)
@@ -152,10 +152,14 @@ public class RamseteCommandWrapper extends CommandBase {
      *         corresponding path JSON
      */
     public Path getJSONPath() {
-      var path = "paths/";
+      var path = "paths/output/";
+      
       switch (this) {
         case test:
           path += "test.wpilib.json";
+          break;
+        case funky:
+          path += "funky.wpilib.json";
           break;
       }
 

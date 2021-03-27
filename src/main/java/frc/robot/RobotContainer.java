@@ -24,6 +24,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.RamseteCommandWrapper;
+import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -44,7 +45,6 @@ public class RobotContainer {
 
     private final Shoot shoot = new Shoot(shooter, limelight);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
-
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,19 +69,7 @@ public class RobotContainer {
         aButton.whileActiveContinuous(shoot);
     }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
     public Command getAutonomousCommand() {
-        RamseteCommandWrapper ramseteCommand = new RamseteCommandWrapper(
-            this.drivetrain, 
-            new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(new Translation2d(5.5, -5.5), new Translation2d(11, 0), new Translation2d(11-1.37, -5.5)),
-            new Pose2d(0, 0, new Rotation2d(0)));
-    
-        // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.funky).andThen(() -> drivetrain.tankLRVolts(0, 0));
     }
 }
