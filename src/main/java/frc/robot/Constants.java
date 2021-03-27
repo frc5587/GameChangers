@@ -103,4 +103,9 @@ public final class Constants {
     
         public static final double G = ShooterConstants.G;
     }
+
+    public static class IntakeConstants {
+        public static final int INTAKE_MOTOR = 40;
+        public static final double THROTTLE = 1;
+    }
 }
