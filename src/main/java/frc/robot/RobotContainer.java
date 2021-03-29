@@ -24,6 +24,7 @@ import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.IntakeForward;
 import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
@@ -48,6 +49,7 @@ public class RobotContainer {
 
     private final Shoot shoot = new Shoot(shooter, limelight);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
+    private final IntakeForward intakeForward = new IntakeForward(intake, drivetrain);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -66,14 +68,17 @@ public class RobotContainer {
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
         shooter.setDefaultCommand(simpleShoot);
-        // Trigger rightJoy = new Trigger(() -> xboxController.getY(Hand.kRight) != 0);
-        Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+
+        JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
+        JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
 
         aButton.whileActiveContinuous(shoot);
-        xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
-        xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
+        // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
+        // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
+        leftTrigger.whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
+        rightTrigger.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
     }
 
     public Command getAutonomousCommand() {
