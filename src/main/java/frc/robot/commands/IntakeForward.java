@@ -5,18 +5,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePistons;
 
 public class IntakeForward extends CommandBase {
     private Intake intake;
     private Drivetrain drivetrain;
+    private IntakePistons intakePistons;
     private final PIDController controller = new PIDController(IntakeConstants.PID.kP, IntakeConstants.PID.kI,
             IntakeConstants.PID.kD);
 
-    public IntakeForward(Intake intake, Drivetrain drivetrain) {
+    public IntakeForward(Intake intake, IntakePistons intakePistons, Drivetrain drivetrain) {
         this.intake = intake;
         this.drivetrain = drivetrain;
+        this.intakePistons = intakePistons;
 
-        addRequirements(intake);
+        addRequirements(intake, intakePistons);
+    }
+
+    @Override
+    public void initialize() {
+        intakePistons.extend();
     }
 
     /**
@@ -33,5 +41,6 @@ public class IntakeForward extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         intake.stop();
+        intakePistons.retract();
     }
 }

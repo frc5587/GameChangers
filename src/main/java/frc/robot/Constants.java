@@ -112,5 +112,7 @@ public final class Constants {
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;
         public static final PID PID = new PID(0, 0, 0);
+
+        public static final int[][] PISTON_PORTS = {{0, 1}, {2, 3}};
     }
 }

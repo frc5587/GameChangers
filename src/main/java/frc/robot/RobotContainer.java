@@ -29,6 +29,7 @@ import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePistons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,13 +44,14 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
     private final Drivetrain drivetrain = new Drivetrain();
     private final Intake intake = new Intake();
+    private final IntakePistons intakePistons = new IntakePistons();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
     private final Shoot shoot = new Shoot(shooter, limelight);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
-    private final IntakeForward intakeForward = new IntakeForward(intake, drivetrain);
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
