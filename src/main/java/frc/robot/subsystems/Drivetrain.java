@@ -47,7 +47,6 @@ public class Drivetrain extends PIDSubsystem {
     /**
      * Creates a new Drive.
      */
-
     public Drivetrain() {
         super(
                 // The PIDController used for auto-centering the drivetrain
@@ -55,7 +54,7 @@ public class Drivetrain extends PIDSubsystem {
                         DrivetrainConstants.TURN_FPID.kD));
 
         configureSpark();
-        
+
         var currentAngle = Rotation2d.fromDegrees(getHeading360());
         this.odometry = new DifferentialDriveOdometry(currentAngle);
         // TODO: Allow for selecting of several initial positions with odometry, instead
@@ -69,6 +68,9 @@ public class Drivetrain extends PIDSubsystem {
         controller.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
     }
 
+    /**
+     * Configures SparkMaxes
+     */
     private void configureSpark() {
         leftLeader.restoreFactoryDefaults();
         leftFollower.restoreFactoryDefaults();
@@ -93,6 +95,9 @@ public class Drivetrain extends PIDSubsystem {
         rightFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
     }
 
+    /**
+     * Takes drivetrain data and inputs it into SmartDashboard
+     */
     public void logData() {
         SmartDashboard.putNumber("left enc", leftEncoder.getPosition());
         SmartDashboard.putNumber("right enc", rightEncoder.getPosition());
@@ -103,14 +108,29 @@ public class Drivetrain extends PIDSubsystem {
         // System.out.println("lv: " + leftEncoder.getPosition() + " rv: " + rightEncoder.getPosition());
     }
 
+    /**
+     * Controls the drvivetrain through a differential drive with throttle and curve values
+     * @param throttle
+     * @param curve
+     */
     public void arcadeDrive(double throttle, double curve) {
         differentialDrive.arcadeDrive(throttle, curve, false);
     }
 
+    /**
+     * Controls the drivetrain through left and right throttle values
+     * @param leftThrottle
+     * @param rightThrottle
+     */
     public void tankLR(double leftThrottle, double rightThrottle) {
         differentialDrive.tankDrive(leftThrottle, rightThrottle, false);
     }
 
+    /**
+     * Controls the drivetrain by setting lef tand right volt output
+     * @param leftVolts
+     * @param rightVolts
+     */
     public void tankLRVolts(double leftVolts, double rightVolts) {
         // Convert voltages to percents by dividing by maximum value
         // tankLR(-leftVoltage / 12.0, -rightVoltage / 12.0);
@@ -119,49 +139,88 @@ public class Drivetrain extends PIDSubsystem {
         differentialDrive.feed();
     }
 
+    /**
+     * Stops the drivetrain
+     */
     public void stop() {
         differentialDrive.stopMotor();
     }
 
+    /**
+     * Gets position of the left side using encoders
+     * @return position of the left side of the robot
+     */
     public double getLeftPositionRotations() {
         return leftEncoder.getPosition() / 2;
     }
 
+    /**
+     * Gets position of the right side using encoders
+     * @return position of the right side of the robot
+     */
     public double getRightPositionRotations() {
         return rightEncoder.getPosition() / 2;
     }
 
+    /**
+     * Takes number of rotations wheel has gone through and converts it to meters
+     * @param rotations rotations which the wheels have gone through
+     * @return distance robot has travelled in meters
+     */
     private double rotationsToMeters(double rotations) {
         // number of rotations * circumfrence of wheel
         return rotations * DrivetrainConstants.WHEEL_DIAMETER_METERS * Math.PI;
     }
 
+    /**
+     * @return how far the left side of the robot has travelled
+     */
     public double getLeftPositionMeters() {
         return rotationsToMeters(getLeftPositionRotations());
     }
 
+    /**
+     * @return how far the right side of the robot has travelled
+     */
     public double getRightPositionMeters() {
         return rotationsToMeters(getRightPositionRotations());
     }
 
+    /**
+     * @return the velocity of the right side in rotations per minute
+     */
     public double getRightVelocityRotationsPerMinute() {
         return rightEncoder.getVelocity() / 2;
     }
 
+    /**
+     * @return the velocity of the left side in rotations per minute
+     */
     public double getLeftVelocityRotationsPerMinute() {
         return leftEncoder.getVelocity() / 2;
     }
 
+    /**
+     * Converts rotational velocity to linear velocity
+     * @param rotationsPerMinute
+     * @return linear velocity in meters per second
+     */
     private double rotationsPerMinuteToMetersPerSecond(double rotationsPerMinute) {
         var radiansPerSecond = Units.rotationsPerMinuteToRadiansPerSecond(rotationsPerMinute);
         var linearMetersPerSecond = radiansPerSecond * DrivetrainConstants.WHEEL_RADIUS_METERS;
         return linearMetersPerSecond;
     }
 
+    /**
+     * @return velocity of the left side in meters per second
+     */
     public double getLeftVelocityMetersPerSecond() {
         return rotationsPerMinuteToMetersPerSecond(getLeftVelocityRotationsPerMinute());
     }
 
+    /**
+     * @return velocity of the right side in meters per second
+     */
     public double getRightVelocityMetersPerSecond() {
         return rotationsPerMinuteToMetersPerSecond(getRightVelocityRotationsPerMinute());
     }
@@ -177,7 +236,7 @@ public class Drivetrain extends PIDSubsystem {
         return ahrs.getAngle() * (DrivetrainConstants.INVERT_GYRO_DIRECTION ? -1 : 1);
         // return gyro.getAngle();
     }
-
+    
     public double getHeading360() {
         return Math.IEEEremainder(getHeading(), 360.0/* d */);
         // return gyro.getAngle();
@@ -241,7 +300,10 @@ public class Drivetrain extends PIDSubsystem {
         odometry.resetPosition(new Pose2d(), new Rotation2d());
     }
 
-    // TODO: does this work?
+    /**
+     * resets the entire odometry and encoders
+     * @param pose pose of the robot at a certain instance
+     */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
         odometry.resetPosition(pose, ahrs.getRotation2d());
@@ -265,6 +327,9 @@ public class Drivetrain extends PIDSubsystem {
         return -ahrs.getRate();
     }
 
+    /** 
+     * Sets idle mode of all motors
+    */
     public void setIdleMode(IdleMode idleMode) {
         leftLeader.setIdleMode(idleMode);
         leftFollower.setIdleMode(idleMode);
@@ -312,11 +377,18 @@ public class Drivetrain extends PIDSubsystem {
         poseHistory.put(Timer.getFPGATimestamp(), getPose());
     }
 
+    /**
+     * stops the drivetrain without using differential drive
+     */
     public void stopDrivetrain() {
         leftGroup.set(0);
         rightGroup.set(0);
     }
 
+    /**
+     * sets drivetrain speed without using differential drive
+     * @param speed desired speed of motors, from -1 to 1
+     */
     public void setDrive(double speed) {
         leftGroup.set(-speed);
         rightGroup.set(speed);
