@@ -54,6 +54,22 @@ public class Drivetrain extends PIDSubsystem {
                 new PIDController(DrivetrainConstants.TURN_FPID.kP, DrivetrainConstants.TURN_FPID.kI,
                         DrivetrainConstants.TURN_FPID.kD));
 
+        configureSpark();
+        
+        var currentAngle = Rotation2d.fromDegrees(getHeading360());
+        this.odometry = new DifferentialDriveOdometry(currentAngle);
+        // TODO: Allow for selecting of several initial positions with odometry, instead
+        // of assuming x=0, y=0
+
+        // Configure turn PID
+        this.disable();
+        var controller = this.getController();
+        controller.enableContinuousInput(-180, 180);
+        controller.setIntegratorRange(-1, 1);
+        controller.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
+    }
+
+    private void configureSpark() {
         leftLeader.restoreFactoryDefaults();
         leftFollower.restoreFactoryDefaults();
         rightLeader.restoreFactoryDefaults();
@@ -75,18 +91,6 @@ public class Drivetrain extends PIDSubsystem {
         leftFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
         rightLeader.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
         rightFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
-
-        var currentAngle = Rotation2d.fromDegrees(getHeading360());
-        this.odometry = new DifferentialDriveOdometry(currentAngle);
-        // TODO: Allow for selecting of several initial positions with odometry, instead
-        // of assuming x=0, y=0
-
-        // Configure turn PID
-        this.disable();
-        var controller = this.getController();
-        controller.enableContinuousInput(-180, 180);
-        controller.setIntegratorRange(-1, 1);
-        controller.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
     }
 
     public void logData() {
