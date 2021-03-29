@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
@@ -46,6 +47,8 @@ public class RobotContainer {
 
         var leftBumper = new JoystickButton(xb, DeadbandXboxController.Button.kBumperLeft.value);
         var rightBumper = new JoystickButton(xb, DeadbandXboxController.Button.kBumperRight.value);
+        var yButton = new JoystickButton(xb, DeadbandXboxController.Button.kY.value);
+        var bButton = new JoystickButton(xb, DeadbandXboxController.Button.kB.value);
 
         // Conveyor w/o intake
         rightBumper.whileHeld(() -> {conveyor.intakeConveyor();}, conveyor)
@@ -54,6 +57,11 @@ public class RobotContainer {
         leftBumper.whileHeld(() -> {conveyor.intakeConveyorReverse();}, conveyor)
             .whenReleased(() -> {conveyor.stopIntakeConveyor();}, conveyor);
 
+        yButton.whileHeld(() -> {conveyor.shooterConveyor();}, conveyor)
+            .whenReleased(() -> {conveyor.stopShooterConveyor();}, conveyor);
+        
+        bButton.whileHeld(() -> {conveyor.shooterConveyorReverse();}, conveyor)
+            .whenReleased(() -> {conveyor.stopShooterConveyor();}, conveyor);
     }
 
     /**

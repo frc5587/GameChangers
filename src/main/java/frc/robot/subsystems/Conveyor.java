@@ -15,6 +15,7 @@ public class Conveyor extends SubsystemBase {
 
     private final CANSparkMax conveyorMotorBack = new CANSparkMax(ConveyorConstants.CONVEYOR_MOTOR_BACK, MotorType.kBrushless);
     private final CANSparkMax conveyorMotorFront = new CANSparkMax(ConveyorConstants.CONVEYOR_MOTOR_FRONT, MotorType.kBrushless);
+    private final CANSparkMax conveyorMotorBackTwo = new CANSparkMax(ConveyorConstants.CONVEYOR_MOTOR_BACK_TWO, MotorType.kBrushless);
 
     /** Creates a new Conveyor. */
     public Conveyor() {
@@ -28,16 +29,22 @@ public class Conveyor extends SubsystemBase {
         conveyorMotorFront.restoreFactoryDefaults();
         conveyorMotorFront.setIdleMode(IdleMode.kBrake);
 
+        conveyorMotorBackTwo.restoreFactoryDefaults();
+        conveyorMotorBackTwo.setIdleMode(IdleMode.kBrake);
+        // conveyorMotorBackTwo.follow(conveyorMotorFront);
+
     }
 
     public void shooterConveyor() {
         conveyorMotorFront.set(ConveyorConstants.CONVEYOR_THROTTLE_FRONT);
         conveyorMotorBack.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
+        conveyorMotorBackTwo.set(-ConveyorConstants.CONVEYOR_MOTOR_BACK);
     }
 
     public void shooterConveyorReverse() {
         conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_MOTOR_FRONT);
         conveyorMotorBack.set(-ConveyorConstants.CONVEYOR_MOTOR_BACK);
+        conveyorMotorBackTwo.set(ConveyorConstants.CONVEYOR_MOTOR_BACK);
     }
 
     public void intakeConveyor() {
@@ -45,7 +52,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void intakeConveyorReverse() {
-        conveyorMotorFront.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
+        conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_THROTTLE_BACK);
     }
 
     public void stopIntakeConveyor() {
@@ -55,5 +62,6 @@ public class Conveyor extends SubsystemBase {
     public void stopShooterConveyor() {
         conveyorMotorFront.set(0);
         conveyorMotorBack.set(0);
+        conveyorMotorBackTwo.set(0);
     }
 }
