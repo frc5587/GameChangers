@@ -14,8 +14,8 @@ package frc.robot;
  */
 public final class Constants {
     public static final class ConveyorConstants {
-        public static final double CONVEYOR_THROTTLE_FRONT = 0.25;
-        public static final double CONVEYOR_THROTTLE_BACK = 0.25;
+        public static final double CONVEYOR_THROTTLE_FRONT = 0.375;
+        public static final double CONVEYOR_THROTTLE_BACK = 0.375;
 
         public static final int CONVEYOR_MOTOR_FRONT = 40;
         public static final int CONVEYOR_MOTOR_BACK = 50;
