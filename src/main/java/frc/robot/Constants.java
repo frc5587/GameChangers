@@ -59,7 +59,7 @@ public final class Constants {
         public static final double KS_VOLTS = 0.211;
         public static final double KV_VOLT_SECONDS_PER_METER = 0.324;
         public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0307;
-        public static final double TRACK_WIDTH_METERS = 0.686863135; // Empirically determined fixed
+        public static final double TRACK_WIDTH_METERS = 0.546; // Empirically determined fixed
         public static final double RAMSETE_KP_DRIVE_VEL = 1.23; // Raw from charact. fixed
 
         // Basic differential drivetrain kinematics constants
@@ -75,7 +75,7 @@ public final class Constants {
 
     public static class ShooterConstants {
         public static final int MOTOR_ONE = 30;
-        public static final int MOTOR_TWO = 21;
+        public static final int MOTOR_TWO = 31;
 
         public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
 

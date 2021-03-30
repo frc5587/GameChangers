@@ -1,9 +1,9 @@
 {
-  "lengthUnit": "Meter",
+  "lengthUnit": "Foot",
   "exportUnit": "Always Meters",
-  "maxVelocity": 3.0,
-  "maxAcceleration": 3.0,
-  "wheelBase": 0.686863135,
-  "gameName": "Infinite Recharge",
-  "outputDir": "../src/main/deploy/paths"
+  "maxVelocity": 16.0,
+  "maxAcceleration": 26.0,
+  "wheelBase": 2.2534879757218,
+  "gameName": "Barrel Racing Path",
+  "outputDir": "../src/main/deploy/paths/output"
 }

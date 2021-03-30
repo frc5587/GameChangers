@@ -142,7 +142,7 @@ public class RamseteCommandWrapper extends CommandBase {
   }
 
   public enum AutoPaths {
-    test, funky;
+    test, funky, barrel_racing, testing;
 
     /**
      * Get the path to the corresponding path JSON file (generated with PathWeaver)
@@ -152,7 +152,7 @@ public class RamseteCommandWrapper extends CommandBase {
      *         corresponding path JSON
      */
     public Path getJSONPath() {
-      var path = "paths/output/";
+      var path = "paths/output/output/";
       
       switch (this) {
         case test:
@@ -161,6 +161,13 @@ public class RamseteCommandWrapper extends CommandBase {
         case funky:
           path += "funky.wpilib.json";
           break;
+        case barrel_racing:
+          path += "barrel_racing.wpilib.json";
+          break;
+        case testing:
+          path += "testing.wpilib.json";
+          break;
+
       }
 
       // Join the path with where the code is deployed to on the roboRIO, in order to
