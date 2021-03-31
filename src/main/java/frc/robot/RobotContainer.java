@@ -4,21 +4,14 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;
@@ -75,12 +68,16 @@ public class RobotContainer {
         JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
+        JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         aButton.whileActiveContinuous(shoot);
         // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
         // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
-        leftTrigger.whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
+        leftTrigger.whileActiveContinuous(intake::moveBackward, intake).whenInactive(intake::stop, intake);
         rightTrigger.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
+        leftBumper.whenActive(intakePistons::retract, intakePistons);
+        rightBumper.whenActive(intakePistons::extend, intakePistons);
     }
 
     public Command getAutonomousCommand() {
