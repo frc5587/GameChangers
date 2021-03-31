@@ -35,7 +35,7 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
     private final Drivetrain drivetrain = new Drivetrain();
 
-    private final DeadbandJoystick joystick = new DeadbandJoystick(0);
+    private final DeadbandJoystick joystick = new DeadbandJoystick(0, 1.5);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
     private final Shoot shoot = new Shoot(shooter, limelight);
