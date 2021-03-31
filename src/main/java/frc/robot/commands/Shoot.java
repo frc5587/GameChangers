@@ -4,15 +4,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.ShooterConstants.RegressionConstants;
 
 public class Shoot extends CommandBase {
     private Shooter shooter;
     private Limelight limelight;
-    private boolean active = false;
 
-    private static double defaultSpinUpSpeed = 1000;  // RPM
+    private static double defaultSpinUpSpeedRPS = 16;  // RPM
     
     public Shoot(Shooter shooter, Limelight limelight) {
         super();
@@ -28,33 +25,27 @@ public class Shoot extends CommandBase {
     @Override
     public void initialize() {
         limelight.turnOn();
-        shooter.enableJRAD();
-
-        active = true;
+        shooter.enableJRADControl();
     }
 
     @Override
     public void end(boolean interrupted) {
         limelight.turnOff();
-        shooter.disableJRAD();
+        shooter.disableJRADControl();
     }
 
     public void updateShooter() {
         double distance = limelight.getDistanceFromInner();
 
-        double wheelRPM = (RegressionConstants.U * distance) + (RegressionConstants.P/(Math.pow(distance, 2) - RegressionConstants.N)); 
-
-        shooter.setVelocity(wheelRPM);
+        shooter.calculateAndSetVelocity(distance);
     }
 
     @Override
     public void execute() {
-        if (active) {
-            if (limelight.isTargetDetected()) {
-                updateShooter();
-            } else {
-                shooter.setVelocity(defaultSpinUpSpeed);
-            }
+        if (limelight.isTargetDetected()) {
+            updateShooter();
+        } else {
+            shooter.setVelocityRPS(defaultSpinUpSpeedRPS);
         }
     }
 }
