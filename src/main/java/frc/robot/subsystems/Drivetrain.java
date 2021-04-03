@@ -128,7 +128,7 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     private double rotationsToMeters(double rotations) {
-        // number of rotations * circumfrence of wheel
+        // number of rotations * circumference of wheel
         return rotations * DrivetrainConstants.WHEEL_DIAMETER_METERS * Math.PI;
     }
 

@@ -13,5 +13,10 @@
     "**/.settings": true,
     "**/.factorypath": true,
     "**/*~": true
-  }
+  },
+  "cSpell.words": [
+    "deadbanded",
+    "drivetrain's",
+    "robo"
+  ]
 }

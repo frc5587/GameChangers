@@ -12,10 +12,12 @@ public class MoveToPowercell extends CommandBase {
     private PowercellDetector powercellDetector;
     private Drivetrain drivetrain;
     private RamseteCommandWrapper ramseteCommand;
+    private IntakeForward intakeForward;
 
-    public MoveToPowercell(PowercellDetector powercellDetector, Drivetrain drivetrain) {
+    public MoveToPowercell(PowercellDetector powercellDetector, Drivetrain drivetrain, IntakeForward intakeForward) {
         this.drivetrain = drivetrain;
         this.powercellDetector = powercellDetector;
+        this.intakeForward = intakeForward;
 
         addRequirements(powercellDetector, drivetrain);
     }
@@ -31,6 +33,7 @@ public class MoveToPowercell extends CommandBase {
             
             ramseteCommand = new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(), new Pose2d(powercellX, -powercellY, new Rotation2d(-angle)));
             ramseteCommand.schedule();
+            intakeForward.schedule();
         } else {
             ramseteCommand = null;
         }
@@ -42,14 +45,15 @@ public class MoveToPowercell extends CommandBase {
             ramseteCommand.end(interrupted);
             ramseteCommand = null;
         }
+        intakeForward.end(interrupted);
     }
 
-    @Override
-    public boolean isFinished() {
-        if (ramseteCommand == null) {
-            return true;
-        } else {
-            return ramseteCommand.isFinished();
-        }
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     if (ramseteCommand == null) {
+    //         return true;
+    //     } else {
+    //         return ramseteCommand.isFinished();
+    //     }
+    // }
 }

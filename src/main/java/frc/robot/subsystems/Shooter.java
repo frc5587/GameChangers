@@ -15,13 +15,11 @@ public class Shooter extends SubsystemBase {
     private final CANSparkMax motorTwo = new CANSparkMax(ShooterConstants.MOTOR_TWO, MotorType.kBrushless);
 
     private final CANEncoder encoderOne = motorOne.getEncoder();
-    private final CANEncoder encoderTwo = motorTwo.getEncoder();
 
     private final ShooterFeedbackController motorFeedbackController = new ShooterFeedbackController(ShooterConstants.SHOOTER_JRAD, this::getVelocityRPM);
 
     private double setpointVelocity = 0;
     private boolean enabled = false;
-    private double lastVelocity = 0;
     private double nowVelocity = 0;
 
     public Shooter() {
@@ -52,7 +50,6 @@ public class Shooter extends SubsystemBase {
      */
     @Override
     public void periodic() {
-        lastVelocity = nowVelocity;
         nowVelocity = getVelocityRPM();
         SmartDashboard.putNumber("Velocity RPM", nowVelocity);
         // log();

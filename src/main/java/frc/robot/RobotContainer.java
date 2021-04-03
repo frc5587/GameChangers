@@ -50,10 +50,10 @@ public class RobotContainer {
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final Shoot shoot = new Shoot(shooter, limelight, conveyor);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
-    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain);
-    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain, conveyor);
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
+    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -70,18 +70,18 @@ public class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
+        drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getXCurved()));
         shooter.setDefaultCommand(simpleShoot);
 
         JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
         
-        Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
+        // Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
         
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
-        JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        // JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
-        JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
+        // JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
         
         joystickTrigger.whileActiveContinuous(moveToPowercell);
