@@ -85,7 +85,7 @@ public final class Constants {
 
     public static class ShooterConstants {
         public static final int MOTOR_ONE = 30;
-        public static final int MOTOR_TWO = 21;
+        public static final int MOTOR_TWO = 31;
 
         public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
 
