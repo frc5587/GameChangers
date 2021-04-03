@@ -54,13 +54,13 @@ public class RobotContainer {
         rightBumper.whileHeld(() -> {conveyor.intakeConveyor();}, conveyor)
             .whenReleased(() -> {conveyor.stopIntakeConveyor();}, conveyor);
 
-        leftBumper.whileHeld(() -> {conveyor.intakeConveyorReverse();}, conveyor)
+        leftBumper.whileHeld(() -> {conveyor.reverse();;}, conveyor)
             .whenReleased(() -> {conveyor.stopIntakeConveyor();}, conveyor);
 
         yButton.whileHeld(() -> {conveyor.shooterConveyor();}, conveyor)
             .whenReleased(() -> {conveyor.stopShooterConveyor();}, conveyor);
         
-        bButton.whileHeld(() -> {conveyor.shooterConveyorReverse();}, conveyor)
+        bButton.whileHeld(() -> {conveyor.reverse();}, conveyor)
             .whenReleased(() -> {conveyor.stopShooterConveyor();}, conveyor);
     }
 

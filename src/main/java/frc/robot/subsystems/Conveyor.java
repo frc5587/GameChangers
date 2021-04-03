@@ -23,35 +23,32 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void configureSparkMax() {
-        conveyorMotorBack.restoreFactoryDefaults();
-        conveyorMotorBack.setIdleMode(IdleMode.kBrake);
-
+        
         conveyorMotorFront.restoreFactoryDefaults();
         conveyorMotorFront.setIdleMode(IdleMode.kBrake);
+        conveyorMotorFront.setInverted(true);
+        
+        conveyorMotorBack.restoreFactoryDefaults();
+        conveyorMotorBack.setIdleMode(IdleMode.kBrake);
+        conveyorMotorBack.setInverted(true);
 
         conveyorMotorBackTwo.restoreFactoryDefaults();
         conveyorMotorBackTwo.setIdleMode(IdleMode.kBrake);
-        // conveyorMotorBackTwo.follow(conveyorMotorFront);
+        conveyorMotorBackTwo.setInverted(false);
 
     }
 
     public void shooterConveyor() {
         conveyorMotorFront.set(ConveyorConstants.CONVEYOR_THROTTLE_FRONT);
         conveyorMotorBack.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
-        conveyorMotorBackTwo.set(-ConveyorConstants.CONVEYOR_MOTOR_BACK);
-    }
-
-    public void shooterConveyorReverse() {
-        conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_MOTOR_FRONT);
-        conveyorMotorBack.set(-ConveyorConstants.CONVEYOR_MOTOR_BACK);
-        conveyorMotorBackTwo.set(ConveyorConstants.CONVEYOR_MOTOR_BACK);
+        conveyorMotorBackTwo.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
     }
 
     public void intakeConveyor() {
         conveyorMotorFront.set(ConveyorConstants.CONVEYOR_THROTTLE_FRONT);
     }
 
-    public void intakeConveyorReverse() {
+    public void reverse() {
         conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_THROTTLE_BACK);
     }
 
