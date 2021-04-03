@@ -74,8 +74,7 @@ public class RobotContainer {
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         aButton.whileActiveContinuous(shoot);
-        // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
-        // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
+        
         rightBumper.whenActive(intakePistons::extend, intakePistons);
         rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
         
