@@ -69,16 +69,18 @@ public class RobotContainer {
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
         JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         aButton.whileActiveContinuous(shoot);
         // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
         // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
-        leftTrigger.whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
-        rightTrigger.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
-        leftBumper.whenActive(intakePistons::retract, intakePistons);
         rightBumper.whenActive(intakePistons::extend, intakePistons);
+        rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
+        
+        bButton.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
+        bButton.and(leftTrigger).whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
     }
 
     public Command getAutonomousCommand() {
