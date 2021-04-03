@@ -4,28 +4,26 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.IntakeForward;
 import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePistons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,12 +37,15 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Limelight limelight = new Limelight();
     private final Drivetrain drivetrain = new Drivetrain();
+    private final Intake intake = new Intake();
+    private final IntakePistons intakePistons = new IntakePistons();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
     private final Shoot shoot = new Shoot(shooter, limelight);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,10 +64,21 @@ public class RobotContainer {
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
         shooter.setDefaultCommand(simpleShoot);
-        // Trigger rightJoy = new Trigger(() -> xboxController.getY(Hand.kRight) != 0);
+        
+        Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
+        Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
+        JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
+        JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         aButton.whileActiveContinuous(shoot);
+        // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
+        // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
+        leftTrigger.whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
+        rightTrigger.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
+        leftBumper.whenActive(intakePistons::retract, intakePistons);
+        rightBumper.whenActive(intakePistons::extend, intakePistons);
     }
 
     public Command getAutonomousCommand() {

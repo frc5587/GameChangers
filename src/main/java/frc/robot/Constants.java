@@ -6,6 +6,7 @@ package frc.robot;
 
 import org.frc5587.lib.pid.FPID;
 import org.frc5587.lib.pid.JRAD;
+import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Units;
@@ -102,5 +103,16 @@ public final class Constants {
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
     
         public static final double G = ShooterConstants.G;
+    }
+
+    public static class IntakeConstants {
+        public static final int INTAKE_MOTOR = 60;
+        public static final double THROTTLE = .5;
+        public static final double MIN_THROTTLE = 0.6;
+        public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
+        public static final double VELOCITY_MULTIPLIER = 2;
+        public static final PID PID = new PID(0, 0, 0);
+
+        public static final int[] PISTON_PORTS = {0, 1};
     }
 }

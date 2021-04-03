@@ -162,6 +162,10 @@ public class Drivetrain extends PIDSubsystem {
         return rotationsPerMinuteToMetersPerSecond(getRightVelocityRotationsPerMinute());
     }
 
+    public double getAbsoluteAverageVelocityMetersPerSecond() {
+        return (Math.abs(getRightVelocityMetersPerSecond()) + Math.abs(getLeftVelocityMetersPerSecond())) / 2;
+    }
+
     /**
      * Get the raw, unbounded heading of the drivetrain's gyroscope in degrees. To
      * get the bounded gyro scope heading between -180 and +180, use
