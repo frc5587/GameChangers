@@ -64,11 +64,9 @@ public class RobotContainer {
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
         shooter.setDefaultCommand(simpleShoot);
-
-        // JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
+        
         Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
-        // JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
