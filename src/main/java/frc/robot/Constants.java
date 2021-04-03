@@ -22,6 +22,15 @@ import edu.wpi.first.wpilibj.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class ConveyorConstants {
+        public static final double CONVEYOR_THROTTLE_FRONT = 0.5;
+        public static final double CONVEYOR_THROTTLE_BACK = 0.375;
+
+        public static final int CONVEYOR_MOTOR_FRONT = 40;
+        public static final int CONVEYOR_MOTOR_BACK = 50;
+        public static final int CONVEYOR_MOTOR_BACK_TWO = 51;
+    }
+
     public static class AutoConstants {
         public static final double MAX_VELOCITY_METERS_PER_SECOND = 3;
         public static final double MAX_ACCEL_METERS_PER_SECOND_SQUARED = 3;

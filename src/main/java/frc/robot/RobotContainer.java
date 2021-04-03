@@ -9,10 +9,12 @@ import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;
@@ -39,6 +41,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain = new Drivetrain();
     private final Intake intake = new Intake();
     private final IntakePistons intakePistons = new IntakePistons();
+    private final Conveyor conveyor = new Conveyor();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
@@ -74,8 +77,7 @@ public class RobotContainer {
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         aButton.whileActiveContinuous(shoot);
-        // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
-        // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
+        
         rightBumper.whenActive(intakePistons::extend, intakePistons);
         rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
         
