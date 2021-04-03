@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Limelight;
@@ -64,8 +65,10 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
         shooter.setDefaultCommand(simpleShoot);
 
-        JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
-        JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
+        // JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
+        Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
+        Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+        // JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
@@ -74,7 +77,7 @@ public class RobotContainer {
         aButton.whileActiveContinuous(shoot);
         // xButton.and(leftTrigger).whileActiveContinuous(intake::moveBackward).whenInactive(intake::stop);
         // xButton.and(leftTrigger.negate()).whileActiveContinuous(intake::moveForward).whenInactive(intake::stop);
-        leftTrigger.whileActiveContinuous(intake::moveBackward, intake).whenInactive(intake::stop, intake);
+        leftTrigger.whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
         rightTrigger.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
         leftBumper.whenActive(intakePistons::retract, intakePistons);
         rightBumper.whenActive(intakePistons::extend, intakePistons);

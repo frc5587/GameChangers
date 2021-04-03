@@ -1,6 +1,9 @@
 package frc.robot.commands;
 
+import org.frc5587.lib.pid.PIDTunerHelper;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Drivetrain;
@@ -11,8 +14,9 @@ public class IntakeForward extends CommandBase {
     private Intake intake;
     private Drivetrain drivetrain;
     private IntakePistons intakePistons;
-    private final PIDController controller = new PIDController(IntakeConstants.PID.kP, IntakeConstants.PID.kI,
-            IntakeConstants.PID.kD);
+    // private final PIDController controller = new PIDController(IntakeConstants.PID.kP, IntakeConstants.PID.kI,
+    //         IntakeConstants.PID.kD);
+    private final PIDTunerHelper tuner = new PIDTunerHelper("intake", IntakeConstants.PID.kP, IntakeConstants.PID.kI, IntakeConstants.PID.kD);
 
     public IntakeForward(Intake intake, IntakePistons intakePistons, Drivetrain drivetrain) {
         this.intake = intake;
@@ -34,13 +38,14 @@ public class IntakeForward extends CommandBase {
      */
     @Override
     public void execute() {
-        intake.set(controller.calculate(intake.getSurfaceSpeedMetersPerSecond(), Math.max(IntakeConstants.MIN_THROTTLE,
-                drivetrain.getAbsoluteAverageVelocityMetersPerSecond() * IntakeConstants.VELOCITY_MULTIPLIER)));
+        // intake.set(controller.calculate(intake.getSurfaceSpeedMetersPerSecond(), Math.max(IntakeConstants.MIN_THROTTLE,
+        //         drivetrain.getAbsoluteAverageVelocityMetersPerSecond() * IntakeConstants.VELOCITY_MULTIPLIER)));
+        intake.set(tuner.calculate(intake.getSurfaceSpeedMetersPerSecond()));
     }
 
     @Override
     public void end(boolean interrupted) {
         intake.stop();
-        intakePistons.retract();
+        // intakePistons.retract();
     }
 }
