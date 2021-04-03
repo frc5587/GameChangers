@@ -34,8 +34,8 @@ public class Shooter extends SubsystemBase {
         motorOne.restoreFactoryDefaults();
         motorTwo.restoreFactoryDefaults();
 
-        motorOne.setInverted(true);
-        motorTwo.setInverted(true);
+        motorOne.setInverted(false);
+        motorTwo.setInverted(false);
 
         motorOne.setIdleMode(IdleMode.kCoast);
         motorTwo.setIdleMode(IdleMode.kCoast);

@@ -46,9 +46,9 @@ public class RobotContainer {
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final Shoot shoot = new Shoot(shooter, limelight);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
-    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain);
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain, conveyor);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

@@ -2,8 +2,10 @@ package frc.robot.commands;
 
 import org.frc5587.lib.pid.PIDTunerHelper;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePistons;
@@ -11,20 +13,23 @@ import frc.robot.subsystems.IntakePistons;
 public class IntakeForward extends CommandBase {
     private Intake intake;
     private Drivetrain drivetrain;
+    private Conveyor conveyor;
     private IntakePistons intakePistons;
     // private final PIDTunerHelper tuner = new PIDTunerHelper("intake", IntakeConstants.PID.kP, IntakeConstants.PID.kI, IntakeConstants.PID.kD);
 
-    public IntakeForward(Intake intake, IntakePistons intakePistons, Drivetrain drivetrain) {
+    public IntakeForward(Intake intake, IntakePistons intakePistons, Drivetrain drivetrain, Conveyor conveyor) {
         this.intake = intake;
         this.drivetrain = drivetrain;
         this.intakePistons = intakePistons;
+        this.conveyor = conveyor;
 
-        addRequirements(intake, intakePistons);
+        addRequirements(intake, intakePistons, conveyor);
     }
 
     @Override
     public void initialize() {
         intakePistons.extend();
+        conveyor.intakeConveyor();
     }
 
     /**
@@ -44,5 +49,6 @@ public class IntakeForward extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         intake.stop();
+        conveyor.stopIntakeConveyor();
     }
 }
