@@ -4,21 +4,18 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.subsystems.Drivetrain;
@@ -28,6 +25,10 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.RamseteCommandWrapper;
+import frc.robot.commands.IntakeForward;
+import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePistons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -42,13 +43,17 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
     private final PowercellDetector powercellDetector = new PowercellDetector();
     private final Drivetrain drivetrain = new Drivetrain();
+    private final Intake intake = new Intake();
+    private final IntakePistons intakePistons = new IntakePistons();
+    private final Conveyor conveyor = new Conveyor();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final Shoot shoot = new Shoot(shooter, limelight);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
     private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain);
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, drivetrain, conveyor);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -67,27 +72,29 @@ public class RobotContainer {
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
         shooter.setDefaultCommand(simpleShoot);
-        // Trigger rightJoy = new Trigger(() -> xboxController.getY(Hand.kRight) != 0);
-        JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
-        JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
 
-        aButton.whileActiveContinuous(shoot);
+        JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
+        
+        Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
+        Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+        
+        JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
+        JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
+        JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
+        JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
+        
         joystickTrigger.whileActiveContinuous(moveToPowercell);
+        aButton.whileActiveContinuous(shoot);
+        
+        rightBumper.whenActive(intakePistons::extend, intakePistons);
+        rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
+        
+        bButton.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
+        bButton.and(leftTrigger).whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
     }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
     public Command getAutonomousCommand() {
-        RamseteCommandWrapper ramseteCommand = new RamseteCommandWrapper(
-            this.drivetrain, 
-            new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(new Translation2d(5.5, -5.5), new Translation2d(11, 0), new Translation2d(11-1.37, -5.5)),
-            new Pose2d(0, 0, new Rotation2d(0)));
-    
-        // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.test).andThen(() -> drivetrain.tankLRVolts(0, 0));
     }
 }
