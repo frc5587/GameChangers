@@ -47,7 +47,7 @@ public class RamseteCommandWrapper extends CommandBase {
     this.drivetrain = drivetrain;
 
     // Get the path to the trajectory on the RoboRIO's filesystem
-    var trajectoryPath = path.getJSONPath();
+    var trajectoryPath = path.path;
 
     // Get the trajectory based on the file path (throws IOException if not found)
     Trajectory trajectory = null;
@@ -142,37 +142,12 @@ public class RamseteCommandWrapper extends CommandBase {
   }
 
   public enum AutoPaths {
-    test, funky, barrel_racing, testing;
+    test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing");
 
-    /**
-     * Get the path to the corresponding path JSON file (generated with PathWeaver)
-     * in the roboRIO's filesystem for a given enum value
-     * 
-     * @return the complete path under the roboRIO's filesystem for the
-     *         corresponding path JSON
-     */
-    public Path getJSONPath() {
-      var path = "paths/output/output/";
-      
-      switch (this) {
-        case test:
-          path += "test.wpilib.json";
-          break;
-        case funky:
-          path += "funky.wpilib.json";
-          break;
-        case barrel_racing:
-          path += "barrel_racing.wpilib.json";
-          break;
-        case testing:
-          path += "testing.wpilib.json";
-          break;
+    public final Path path;
 
-      }
-
-      // Join the path with where the code is deployed to on the roboRIO, in order to
-      // get the complete path
-      return Filesystem.getDeployDirectory().toPath().resolve(path);
+    private AutoPaths(String fileName) {
+      path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
     }
   }
 }

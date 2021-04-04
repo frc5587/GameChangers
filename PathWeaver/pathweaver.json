@@ -5,5 +5,5 @@
   "maxAcceleration": 26.0,
   "wheelBase": 2.2534879757218,
   "gameName": "Barrel Racing Path",
-  "outputDir": "../src/main/deploy/paths/output"
+  "outputDir": "../src/main/deploy/paths"
 }
