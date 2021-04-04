@@ -41,11 +41,12 @@ public class MoveToPowercell extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        intakeForward.end(interrupted);
+        
         if (ramseteCommand != null) {
             ramseteCommand.end(interrupted);
             ramseteCommand = null;
         }
-        intakeForward.end(interrupted);
     }
 
     // @Override
