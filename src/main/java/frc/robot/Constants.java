@@ -5,8 +5,8 @@
 package frc.robot;
 
 import org.frc5587.lib.pid.FPID;
-import org.frc5587.lib.pid.JRAD;
 import org.frc5587.lib.pid.UNP;
+import org.frc5587.lib.pid.JRADShooterController;
 import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -88,7 +88,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
+        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADShooterController(0.0027, 0.000015, .92);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;

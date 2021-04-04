@@ -9,6 +9,9 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends FixedHoodedShooterBase {
     public Shooter() {
         super(ShooterConstants.MOTOR_ONE, ShooterConstants.MOTOR_TWO);
+
+        setJRADController(ShooterConstants.SHOOTER_JRAD_CONTROLLER);
+        setUNP(ShooterConstants.UNP);
     }
 
     @Override
