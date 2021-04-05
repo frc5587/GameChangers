@@ -105,8 +105,9 @@ public final class Constants {
     }
 
     public static class LimelightConstants {
-        public static final double LIMELIGHT_HEIGHT = 1;                          // TODO: make correct
-        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(30);  // TODO: make correct
+        public static final double LIMELIGHT_HEIGHT = Units.inchesToMeters(17);
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(33);
+        public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(15);
 
         public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
