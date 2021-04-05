@@ -33,121 +33,113 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class RamseteCommandWrapper extends CommandBase {
-  private final Drivetrain drivetrain;
-  private final Trajectory trajectory;
+    private final Drivetrain drivetrain;
+    private final Trajectory trajectory;
 
-  private Command pathFollowCommand;
+    private Command pathFollowCommand;
 
-  /**
-   * Creates a new RamseteCommandWrapper.
-   */
-  public RamseteCommandWrapper(Drivetrain drivetrain, AutoPaths path) {
-    addRequirements(drivetrain);
+    /**
+     * Creates a new RamseteCommandWrapper.
+     */
+    public RamseteCommandWrapper(Drivetrain drivetrain, AutoPaths path) {
+        addRequirements(drivetrain);
 
-    this.drivetrain = drivetrain;
+        this.drivetrain = drivetrain;
 
-    // Get the path to the trajectory on the RoboRIO's filesystem
-    var trajectoryPath = path.path;
+        // Get the path to the trajectory on the RoboRIO's filesystem
+        var trajectoryPath = path.path;
 
-    // Get the trajectory based on the file path (throws IOException if not found)
-    Trajectory trajectory = null;
-    try {
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open " + path + " trajectory: " + trajectoryPath, ex.getStackTrace());
+        // Get the trajectory based on the file path (throws IOException if not found)
+        Trajectory trajectory = null;
+        try {
+            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        } catch (IOException ex) {
+            DriverStation.reportError("Unable to open " + path + " trajectory: " + trajectoryPath, ex.getStackTrace());
+        }
+
+        // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath); // comment
+        // out try catch ^
+
+        // Yell at us if we leave the trajectory at null
+        if (trajectory == null) {
+            throw new NullPointerException();
+        }
+        this.trajectory = trajectory;
     }
 
-    // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath); // comment out try catch ^
+    public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
+        addRequirements(drivetrain);
 
-    // Yell at us if we leave the trajectory at null
-    if (trajectory == null) {
-      throw new NullPointerException();
+        this.drivetrain = drivetrain;
+        this.trajectory = trajectory;
     }
-    this.trajectory = trajectory;
-  }
 
-  public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
-    addRequirements(drivetrain);
+    public RamseteCommandWrapper(Drivetrain drivetrain, Pose2d start, List<Translation2d> path, Pose2d end) {
+        var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS, DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
+                        DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+                DrivetrainConstants.DRIVETRAIN_KINEMATICS, 10);
 
-    this.drivetrain = drivetrain;
-    this.trajectory = trajectory;
-  }
+        TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_VELOCITY_METERS_PER_SECOND,
+                AutoConstants.MAX_ACCEL_METERS_PER_SECOND_SQUARED)
+                        .setKinematics(DrivetrainConstants.DRIVETRAIN_KINEMATICS).addConstraint(autoVoltageConstraint);
 
-  public RamseteCommandWrapper(Drivetrain drivetrain, Pose2d start, List<Translation2d> path, Pose2d end) {
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS, DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
-          DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
-      DrivetrainConstants.DRIVETRAIN_KINEMATICS, 10);
-
-    TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_VELOCITY_METERS_PER_SECOND,
-      AutoConstants.MAX_ACCEL_METERS_PER_SECOND_SQUARED).setKinematics(DrivetrainConstants.DRIVETRAIN_KINEMATICS)
-          .addConstraint(autoVoltageConstraint);
-
-    this.trajectory = TrajectoryGenerator.generateTrajectory(start, path, end, config);
-    this.drivetrain = drivetrain;
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    drivetrain.setIdleMode(IdleMode.kBrake);
-    // drivetrain.resetOdometry();
-
-    // Start the pathFollowCommand
-    if (trajectory != null) {
-
-      // Create the RamseteCommand based on the drivetrain's constants
-      var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
-          new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
-          new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS, DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
-              DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
-          DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
-          new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
-          new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
-          // RamseteCommand passes volts to the callback
-          drivetrain::tankLRVolts, drivetrain);
-      
-      drivetrain.resetOdometry(trajectory.getInitialPose());
-
-      // Run path following command, then stop at the end
-      pathFollowCommand = ramsete;
-
-      pathFollowCommand.schedule();
+        this.trajectory = TrajectoryGenerator.generateTrajectory(start, path, end, config);
+        this.drivetrain = drivetrain;
     }
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        drivetrain.setIdleMode(IdleMode.kBrake);
+        // drivetrain.resetOdometry();
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    // Stop the drivetrain and path following command just in case
-    if (pathFollowCommand != null) {
-      pathFollowCommand.cancel();
+        // Start the pathFollowCommand
+        if (trajectory != null) {
+
+            // Create the RamseteCommand based on the drivetrain's constants
+            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
+                    new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
+                    new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
+                            DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
+                            DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+                    DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
+                    new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+                    new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+                    // RamseteCommand passes volts to the callback
+                    drivetrain::tankLRVolts, drivetrain);
+
+            drivetrain.resetOdometry(trajectory.getInitialPose());
+
+            // Run path following command, then stop at the end
+            pathFollowCommand = ramsete;
+
+            pathFollowCommand.schedule();
+        }
     }
-    drivetrain.stop();
-  }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    if (pathFollowCommand != null) {
-      return !pathFollowCommand.isScheduled();
-    } else {
-      return true;
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
     }
-  }
 
-  public enum AutoPaths {
-    test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing");
-
-    public final Path path;
-
-    private AutoPaths(String fileName) {
-      path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        // Stop the drivetrain and path following command just in case
+        if (pathFollowCommand != null) {
+            pathFollowCommand.cancel();
+        }
+        drivetrain.stop();
     }
-  }
+
+    public enum AutoPaths {
+        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing");
+
+        public final Path path;
+
+        private AutoPaths(String fileName) {
+        path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
+        }
+    }
 }

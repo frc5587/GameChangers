@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants.ShooterConstants.RegressionConstants;
@@ -9,18 +11,21 @@ import frc.robot.Constants.ShooterConstants.RegressionConstants;
 public class Shoot extends CommandBase {
     private Shooter shooter;
     private Limelight limelight;
+    private Conveyor conveyor;
+    private Intake intake;
     private boolean active = false;
 
-    private static double defaultSpinUpSpeed = 1000;  // RPM
+    private static double defaultSpinUpSpeed = 3000;  // RPM
     
-    public Shoot(Shooter shooter, Limelight limelight) {
+    public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake) {
         super();
 
         this.shooter = shooter;
         this.limelight = limelight;
+        this.conveyor = conveyor;
+        this.intake = intake;
         
-        
-        addRequirements(shooter, limelight);
+        addRequirements(shooter, conveyor);
         SmartDashboard.putNumber("try velocity RPM", 0);
     }
 
@@ -36,6 +41,8 @@ public class Shoot extends CommandBase {
     public void end(boolean interrupted) {
         limelight.turnOff();
         shooter.disableJRAD();
+        conveyor.stopShooterConveyor();
+        intake.stop();
     }
 
     public void updateShooter() {
@@ -53,6 +60,11 @@ public class Shoot extends CommandBase {
                 updateShooter();
             } else {
                 shooter.setVelocity(defaultSpinUpSpeed);
+            }
+
+            if (shooter.atSetpoint()) {
+                conveyor.shooterConveyor();
+                intake.moveForward();
             }
         }
     }

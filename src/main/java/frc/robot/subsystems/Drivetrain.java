@@ -168,7 +168,7 @@ public class Drivetrain extends PIDSubsystem {
      * @return distance robot has travelled in meters
      */
     private double rotationsToMeters(double rotations) {
-        // number of rotations * circumfrence of wheel
+        // number of rotations * circumference of wheel
         return rotations * DrivetrainConstants.WHEEL_DIAMETER_METERS * Math.PI;
     }
 
@@ -223,6 +223,10 @@ public class Drivetrain extends PIDSubsystem {
      */
     public double getRightVelocityMetersPerSecond() {
         return rotationsPerMinuteToMetersPerSecond(getRightVelocityRotationsPerMinute());
+    }
+
+    public double getAbsoluteAverageVelocityMetersPerSecond() {
+        return (Math.abs(getRightVelocityMetersPerSecond()) + Math.abs(getLeftVelocityMetersPerSecond())) / 2;
     }
 
     /**

@@ -8,19 +8,28 @@ import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SimpleShoot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PowercellDetector;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.IntakeBackward;
+import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.RamseteCommandWrapper;
+import frc.robot.commands.IntakeForward;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePistons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -31,15 +40,22 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final Shooter shooter = new Shooter();
+    private final Shooter shooter =  new Shooter();
     private final Limelight limelight = new Limelight();
+    private final PowercellDetector powercellDetector = new PowercellDetector();
     private final Drivetrain drivetrain = new Drivetrain();
+    private final Intake intake = new Intake();
+    private final IntakePistons intakePistons = new IntakePistons();
+    private final Conveyor conveyor = new Conveyor();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0, 1.5);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final Shoot shoot = new Shoot(shooter, limelight);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
+    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
+    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
+    private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -56,15 +72,31 @@ public class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getX()));
+        drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getXCurveDampened()));
         shooter.setDefaultCommand(simpleShoot);
-        // Trigger rightJoy = new Trigger(() -> xboxController.getY(Hand.kRight) != 0);
-        JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
 
+        JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
+        
+        // Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
+        Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+        
+        JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
+        // JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
+        // JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
+        JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
+        
+        joystickTrigger.whileActiveContinuous(moveToPowercell);
         aButton.whileActiveContinuous(shoot);
+        
+        rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
+        rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
+        
+        bButton.and(leftTrigger.negate()).whileActiveContinuous(intakeForward); 
+        bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
     }
 
     public Command getAutonomousCommand() {
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.funky).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.test).andThen(() -> drivetrain.tankLRVolts(0, 0));
     }
 }
