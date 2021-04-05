@@ -23,6 +23,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.PowercellDetector;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.IntakeBackward;
 import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.IntakeForward;
@@ -39,7 +40,7 @@ import frc.robot.subsystems.IntakePistons;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final Shooter shooter = new Shooter();
+    private final Shooter shooter =  new Shooter();
     private final Limelight limelight = new Limelight();
     private final PowercellDetector powercellDetector = new PowercellDetector();
     private final Drivetrain drivetrain = new Drivetrain();
@@ -54,6 +55,7 @@ public class RobotContainer {
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
     private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
     private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
+    private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -87,11 +89,11 @@ public class RobotContainer {
         joystickTrigger.whileActiveContinuous(moveToPowercell);
         aButton.whileActiveContinuous(shoot);
         
-        rightBumper.whenActive(intakePistons::extend, intakePistons);
+        rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
         rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
         
-        bButton.whileActiveContinuous(intakeForward);   // Will stop intake automatically when ended
-        bButton.and(leftTrigger).whenActive(intake::moveBackward, intake).whenInactive(intake::stop, intake);
+        bButton.and(leftTrigger.negate()).whileActiveContinuous(intakeForward); 
+        bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
     }
 
     public Command getAutonomousCommand() {
