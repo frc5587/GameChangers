@@ -134,7 +134,7 @@ public class RamseteCommandWrapper extends CommandBase {
     }
 
     public enum AutoPaths {
-        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing"), test1("test1"), circle("circle");
+        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing"), test1("test1"), circle("circle"), slolam("slolam");
 
         public final Path path;
 

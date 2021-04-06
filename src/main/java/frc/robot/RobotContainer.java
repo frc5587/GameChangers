@@ -111,6 +111,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         // return new RamseteCommandWrapper(drivetrain, AutoPaths.circle).andThen(() -> drivetrain.tankLRVolts(0, 0));
-        return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0))).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        // return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0))).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));  // galactic search
     }
 }
