@@ -14,16 +14,18 @@ public class Shoot extends CommandBase {
     private Conveyor conveyor;
     private Intake intake;
     private boolean active = false;
+    private LimelightCentering limelightCentering;
 
     private static double defaultSpinUpSpeed = 3000;  // RPM
     
-    public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake) {
+    public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering) {
         super();
 
         this.shooter = shooter;
         this.limelight = limelight;
         this.conveyor = conveyor;
         this.intake = intake;
+        this.limelightCentering = limelightCentering;
         
         addRequirements(shooter, conveyor);
         SmartDashboard.putNumber("try velocity RPM", 0);
@@ -33,6 +35,7 @@ public class Shoot extends CommandBase {
     public void initialize() {
         limelight.turnOn();
         shooter.enableJRAD();
+        limelightCentering.schedule();
 
         active = true;
     }
@@ -43,6 +46,7 @@ public class Shoot extends CommandBase {
         shooter.disableJRAD();
         conveyor.stopShooterConveyor();
         intake.stop();
+        limelightCentering.cancel();
     }
 
     public void updateShooter() {
