@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
@@ -11,6 +13,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -27,6 +33,7 @@ import frc.robot.commands.IntakeBackward;
 import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.IntakeForward;
+import frc.robot.commands.MoveToAllPowercells;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePistons;
@@ -54,8 +61,9 @@ public class RobotContainer {
     private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
     private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
-    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
     private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
+    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
+    private final MoveToAllPowercells moveToAllPowercells = new MoveToAllPowercells(powercellDetector, drivetrain, intakeForward);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -76,17 +84,20 @@ public class RobotContainer {
         shooter.setDefaultCommand(simpleShoot);
 
         JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
+        JoystickButton joystickThumb = new JoystickButton(joystick, Joystick.ButtonType.kTop.value);
         
-        // Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+        // Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
         
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
-        // JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
-        // JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
+        // JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
+        // JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kBumperLeft.value);
         
-        joystickTrigger.whileActiveContinuous(moveToPowercell);
+        joystickThumb.whileActiveContinuous(moveToPowercell);
+        joystickTrigger.whileActiveContinuous(moveToAllPowercells);
+        
         aButton.whileActiveContinuous(shoot);
         
         rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
@@ -97,6 +108,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.barrel_racing).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        // return new RamseteCommandWrapper(drivetrain, AutoPaths.circle).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0))).andThen(() -> drivetrain.tankLRVolts(0, 0));
     }
 }
