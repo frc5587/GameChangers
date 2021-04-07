@@ -70,7 +70,7 @@ public final class Constants {
         public static final double KV_VOLT_SECONDS_PER_METER = 0.349;
         public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0266;
         public static final double TRACK_WIDTH_METERS = 0.546; // Empirically determined fixed
-        public static final double RAMSETE_KP_DRIVE_VEL = 0.000164; // Raw from charact. fixed
+        public static final double RAMSETE_KP_DRIVE_VEL = 1.91; // Raw from charact. fixed
 
         // Basic differential drivetrain kinematics constants
         public static final int TICKS_PER_REV = 8192;

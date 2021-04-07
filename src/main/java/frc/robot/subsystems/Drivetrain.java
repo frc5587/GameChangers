@@ -62,10 +62,10 @@ public class Drivetrain extends PIDSubsystem {
 
         // Configure turn PID
         this.disable();
-        var controller = this.getController();
-        controller.enableContinuousInput(-180, 180);
-        controller.setIntegratorRange(-1, 1);
-        controller.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
+        // var controller = this.getController();
+        turnController.enableContinuousInput(-180, 180);
+        turnController.setIntegratorRange(-1, 1);
+        turnController.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
     }
 
     /**
