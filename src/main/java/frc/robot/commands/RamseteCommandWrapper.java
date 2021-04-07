@@ -99,7 +99,7 @@ public class RamseteCommandWrapper extends CommandBase {
 
             // Create the RamseteCommand based on the drivetrain's constants
             var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
-                    new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
+                    new RamseteController(),
                     new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
                             DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
                             DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
@@ -134,7 +134,7 @@ public class RamseteCommandWrapper extends CommandBase {
     }
 
     public enum AutoPaths {
-        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing"), test1("test1"), circle("circle"), slolam("slolam");
+        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing"), test1("test1"), circle("circle"), slolom("slolom");
 
         public final Path path;
 
