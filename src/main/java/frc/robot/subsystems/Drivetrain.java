@@ -280,9 +280,8 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public Pose2d getPose() {
-        var val = odometry.getPoseMeters(); 
-        System.out.println("" + val.getX() + "  " +val.getY());
-        return val;
+        // var val = ; 
+        return odometry.getPoseMeters();
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -380,6 +379,7 @@ public class Drivetrain extends PIDSubsystem {
         var translation = odometry.getPoseMeters().getTranslation();
         SmartDashboard.putNumber("tx", translation.getX());
         SmartDashboard.putNumber("ty", translation.getY());
+        System.out.println("" + getLeftPositionMeters() + "   " + getRightPositionMeters());
         // SmartDashboard.putNumber("angle", odo
 
         // Log the pose

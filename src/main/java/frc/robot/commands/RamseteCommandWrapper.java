@@ -98,8 +98,7 @@ public class RamseteCommandWrapper extends CommandBase {
         if (trajectory != null) {
 
             // Create the RamseteCommand based on the drivetrain's constants
-            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
-                    new RamseteController(),
+            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
                     new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
                             DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
                             DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
@@ -134,12 +133,18 @@ public class RamseteCommandWrapper extends CommandBase {
     }
 
     public enum AutoPaths {
-        test("test"), funky("funky"), barrel_racing("barrel_racing"), testing("testing"), test1("test1"), circle("circle"), slolom("slolom");
+        barrel_racing("barrel_racing"), test1("test1"), circle("circle"), slolom("slolom");
 
         public final Path path;
+        public Trajectory trajectory;
 
         private AutoPaths(String fileName) {
-        path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
+            path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
+            try {
+                this.trajectory = TrajectoryUtil.fromPathweaverJson(path);
+            } catch (IOException e) {
+                this.trajectory = null;
+            }
         }
     }
 }
