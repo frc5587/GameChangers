@@ -127,7 +127,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.barrel_racing).andThen(() ->
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.slolom).andThen(() ->
         drivetrain.tankLRVolts(0, 0));
         // return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)),
         //                 List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)))

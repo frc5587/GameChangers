@@ -45,26 +45,7 @@ public class RamseteCommandWrapper extends CommandBase {
         addRequirements(drivetrain);
 
         this.drivetrain = drivetrain;
-
-        // Get the path to the trajectory on the RoboRIO's filesystem
-        var trajectoryPath = path.path;
-
-        // Get the trajectory based on the file path (throws IOException if not found)
-        Trajectory trajectory = null;
-        try {
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-        } catch (IOException ex) {
-            DriverStation.reportError("Unable to open " + path + " trajectory: " + trajectoryPath, ex.getStackTrace());
-        }
-
-        // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath); // comment
-        // out try catch ^
-
-        // Yell at us if we leave the trajectory at null
-        if (trajectory == null) {
-            throw new NullPointerException();
-        }
-        this.trajectory = trajectory;
+        this.trajectory = path.trajectory;
     }
 
     public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
