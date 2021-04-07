@@ -94,7 +94,7 @@ public class Drivetrain extends PIDSubsystem {
         rightLeader.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
         rightFollower.setSecondaryCurrentLimit(DrivetrainConstants.HARD_CURRENT_LIMIT);
 
-        resetOdometry();
+        resetEncoders();
     }
 
     /**
