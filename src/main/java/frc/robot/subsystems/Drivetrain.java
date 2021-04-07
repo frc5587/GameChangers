@@ -41,7 +41,7 @@ public class Drivetrain extends PIDSubsystem {
 
     private final LimitedPoseMap poseHistory = new LimitedPoseMap(DrivetrainConstants.HISTORY_LIMIT);
 
-    private final PIDController turnController = getController();
+    private final PIDController turnController;
     private double lastAngleSetpoint = Double.NaN;
 
     /**
@@ -62,7 +62,7 @@ public class Drivetrain extends PIDSubsystem {
 
         // Configure turn PID
         this.disable();
-        // var controller = this.getController();
+        turnController = getController();
         turnController.enableContinuousInput(-180, 180);
         turnController.setIntegratorRange(-1, 1);
         turnController.setTolerance(DrivetrainConstants.TURN_PID_TOLERANCE_DEG);
