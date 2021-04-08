@@ -24,7 +24,6 @@ public class MoveToPowercell extends CommandBase {
 
     @Override
     public void initialize() {
-        System.out.println(powercellDetector.seesPowercell());
 
         if (powercellDetector.seesPowercell()) {
             double powercellX = powercellDetector.getPowercellX();
@@ -41,20 +40,11 @@ public class MoveToPowercell extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        intakeForward.end(interrupted);
-        
-        if (ramseteCommand != null) {
-            ramseteCommand.end(interrupted);
+        if (ramseteCommand != null) {   
+            ramseteCommand.cancel();
             ramseteCommand = null;
+
+            intakeForward.cancel();
         }
     }
-
-    // @Override
-    // public boolean isFinished() {
-    //     if (ramseteCommand == null) {
-    //         return true;
-    //     } else {
-    //         return ramseteCommand.isFinished();
-    //     }
-    // }
 }

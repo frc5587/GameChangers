@@ -47,6 +47,7 @@ public class Intake extends SubsystemBase {
      * Move the intake forward
      */
     public void moveForward() {
+        System.out.println("FORWARD");
         intakeMotor.set(IntakeConstants.THROTTLE);
     }
 
@@ -54,6 +55,7 @@ public class Intake extends SubsystemBase {
      * Move the intake backward
      */
     public void moveBackward() {
+        System.out.println("BACK");
         intakeMotor.set(-IntakeConstants.THROTTLE);
     }
 

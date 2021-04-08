@@ -15,6 +15,7 @@ public class Limelight extends SubsystemBase {
     public NetworkTableEntry tv = limelightTable.getEntry("tv");
     public NetworkTableEntry tx = limelightTable.getEntry("tx");
     public NetworkTableEntry ty = limelightTable.getEntry("ty");
+    private NetworkTableEntry ledMode = limelightTable.getEntry("ledMode");
     public double lastDistance;
     private boolean lightOn = false;
 
@@ -50,7 +51,7 @@ public class Limelight extends SubsystemBase {
     }
 
     public double getDistanceFromOuter() {
-        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - .38) 
+        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - LimelightConstants.VERTICAL_GOAL_OFFSET) 
             / Math.tan(getVerticalAngle());
     }
 
@@ -58,14 +59,9 @@ public class Limelight extends SubsystemBase {
         return getDistanceFromOuter() + LimelightConstants.INNER_OUTER_GOAL_DISTANCE;
     }
 
-
     @Override
     public void periodic() {
-        if (lightOn) {
-            limelightTable.getEntry("ledMode").setNumber(3);
-        } else {
-            limelightTable.getEntry("ledMode").setNumber(1);
-        }
+        ledMode.setNumber(lightOn? 3 : 1);
     }
 
     public void turnOn() {

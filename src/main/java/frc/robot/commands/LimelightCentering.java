@@ -9,7 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,6 +21,7 @@ public class LimelightCentering extends CommandBase {
     private final Limelight limelight;
     private final Notifier notifier;
     private final Timer timer = new Timer();
+    private double lastAngle = 0;
 
     /**
      * Creates a new LimelightCentring.
@@ -39,6 +42,7 @@ public class LimelightCentering extends CommandBase {
     @Override
     public void initialize() {
         timer.reset();
+        timer.start();
         // Run the update method based on the given period
         notifier.startPeriodic(Constants.DrivetrainConstants.TURN_PID_UPDATE_PERIOD_SEC);
 
@@ -64,7 +68,6 @@ public class LimelightCentering extends CommandBase {
         // Finish once the turn PID controller is at the setpoint, indicating that it is
         // centred on the target
         return (drivetrain.atSetpoint() && timer.get() >= 0.5);
-        // return false;
     }
 
     /**
@@ -80,29 +83,17 @@ public class LimelightCentering extends CommandBase {
      * @see Drivetrain#enable()
      */
     private void updatePID() {
-        double desiredAngle;
 
         if (limelight.isTargetDetected()) {
             // Get the difference between centre and vision target (error)
             var angleError = limelight.getHorizontalAngle();
 
-            // Calculate the desired angle using the error and current angle
-            var currentHeading = drivetrain.getHeading180();
-            desiredAngle = currentHeading - (angleError / 2); // halves it to ease the turn
-
-            if (Math.abs(desiredAngle - currentHeading) < 0.5) {
-                            
-                timer.start();  
-            }
-
-        } else if (drivetrain.getLastAngleSetpoint() != Double.NaN) {
-            // Default to the last registered setpoint and search for target along the way
-            desiredAngle = drivetrain.getLastAngleSetpoint();
-        } else {
-            desiredAngle = drivetrain.getHeading180();
+            lastAngle = Math.IEEEremainder(drivetrain.getHeading180() + angleError, 180);
         }
 
-        // Set the angle PID controller to the desired angle
-        drivetrain.setSetpoint(desiredAngle);
+        double diffDeg = Math.IEEEremainder(lastAngle - drivetrain.getHeading180(), 180);
+        double diffV = MathUtil.clamp(diffDeg/(LimelightConstants.HFOV/2), -1, 1) * 0.4;
+
+        drivetrain.tankLR(diffV, -diffV);
     }
 }

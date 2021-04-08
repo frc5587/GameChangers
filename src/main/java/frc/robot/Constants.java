@@ -68,11 +68,11 @@ public final class Constants {
         public static final double TURN_PID_UPDATE_PERIOD_SEC = 0.010;
 
         // Values from characterisation
-        public static final double KS_VOLTS = 0.211;
-        public static final double KV_VOLT_SECONDS_PER_METER = 0.324;
-        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0307;
-        public static final double TRACK_WIDTH_METERS = 0.686863135; // Empirically determined fixed
-        public static final double RAMSETE_KP_DRIVE_VEL = 1.23; // Raw from charact. fixed
+        public static final double KS_VOLTS = 0.144;
+        public static final double KV_VOLT_SECONDS_PER_METER = 0.354;
+        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0249;
+        public static final double TRACK_WIDTH_METERS = 0.58; // measured
+        public static final double RAMSETE_KP_DRIVE_VEL = 1.82; // Raw from charact. fixed
 
         // Basic differential drivetrain kinematics constants
         public static final int TICKS_PER_REV = 8192;
@@ -100,19 +100,23 @@ public final class Constants {
         public static final UNP UNP = new UNP(106.002, 19.0896, 141188);
     }
 
-    public static class LimelightConstants {
-        public static final double LIMELIGHT_HEIGHT = 1;                          // TODO: make correct
-        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(68);  // TODO: make correct
+    public static class LimelightConstants {  
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(68);
+        public static final double LIMELIGHT_HEIGHT = Units.inchesToMeters(17);
+        public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(15);
 
         public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
+
+        public static final double VFOV = 41;
+        public static final double HFOV = 54;
     
         public static final double G = ShooterConstants.G;
     }
 
     public static class IntakeConstants {
         public static final int INTAKE_MOTOR = 60;
-        public static final double THROTTLE = .65;
+        public static final double THROTTLE = .75;
         public static final double MIN_THROTTLE = 0.6;
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;
