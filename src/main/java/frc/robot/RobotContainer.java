@@ -108,10 +108,8 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         //* AUTO PATHS
-        // return new RamseteCommandWrapper(drivetrain, AutoPaths.bounce).andThen(() -> drivetrain.tankLRVolts(0, 0));
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.bounce1).andThen(new RamseteCommandWrapper(drivetrain, AutoPaths.bounce2))
-            .andThen(new RamseteCommandWrapper(drivetrain, AutoPaths.bounce3)).andThen(new RamseteCommandWrapper(drivetrain, AutoPaths.bounce4)).andThen(() -> drivetrain.tankLRVolts(0, 0));
-
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.bounce).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        
         //* GALACTIC SEARCH
         // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));
     }
