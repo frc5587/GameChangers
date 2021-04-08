@@ -117,7 +117,7 @@ public final class Constants {
 
     public static class IntakeConstants {
         public static final int INTAKE_MOTOR = 60;
-        public static final double THROTTLE = .5;
+        public static final double THROTTLE = .75;
         public static final double MIN_THROTTLE = 0.6;
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;
