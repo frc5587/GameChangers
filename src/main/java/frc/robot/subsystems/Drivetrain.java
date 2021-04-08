@@ -379,7 +379,6 @@ public class Drivetrain extends PIDSubsystem {
         var translation = odometry.getPoseMeters().getTranslation();
         SmartDashboard.putNumber("tx", translation.getX());
         SmartDashboard.putNumber("ty", translation.getY());
-        System.out.println("" + getLeftPositionMeters() + "   " + getRightPositionMeters());
         // SmartDashboard.putNumber("angle", odo
 
         // Log the pose

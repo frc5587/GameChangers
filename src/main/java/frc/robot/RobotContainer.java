@@ -87,6 +87,7 @@ public class RobotContainer {
         JoystickButton joystickThumb = new JoystickButton(joystick, Joystick.ButtonType.kTop.value);
 
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
+        Trigger rightTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kRight));
 
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
@@ -96,6 +97,7 @@ public class RobotContainer {
         joystickTrigger.whileActiveContinuous(moveToAllPowercells);
 
         aButton.whileActiveContinuous(shoot);
+        rightBumper.whileActiveContinuous(limelightCentering);
 
         rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
         rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
