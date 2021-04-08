@@ -89,7 +89,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADTunerHelper("shooter", 0.0027, 0.000015, .92);
+        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADShooterController(0.0027, 0.000015, .92);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;

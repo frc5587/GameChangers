@@ -33,7 +33,7 @@ public class Shoot extends CommandBase {
     public void initialize() {
         limelight.turnOn();
         shooter.enableJRADControl();
-        limelightCentering.schedule();
+        // limelightCentering.schedule();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Shoot extends CommandBase {
         shooter.disableJRADControl();
         conveyor.stopShooterConveyor();
         intake.stop();
-        limelightCentering.cancel();
+        // limelightCentering.cancel();
     }
 
     public void updateShooter() {
