@@ -36,6 +36,7 @@ public class RamseteCommandWrapper extends CommandBase {
     private final Trajectory trajectory;
 
     private Command pathFollowCommand;
+    private RamseteCommand ramsete;
 
     /**
      * Creates a new RamseteCommandWrapper.
@@ -45,6 +46,8 @@ public class RamseteCommandWrapper extends CommandBase {
 
         this.drivetrain = drivetrain;
         this.trajectory = path.trajectory;
+
+        makeRamsete();
     }
 
     public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
@@ -52,6 +55,7 @@ public class RamseteCommandWrapper extends CommandBase {
 
         this.drivetrain = drivetrain;
         this.trajectory = trajectory;
+        makeRamsete();
     }
 
     public RamseteCommandWrapper(Drivetrain drivetrain, Pose2d start, List<Translation2d> path, Pose2d end) {
@@ -66,6 +70,19 @@ public class RamseteCommandWrapper extends CommandBase {
 
         this.trajectory = TrajectoryGenerator.generateTrajectory(start, path, end, config);
         this.drivetrain = drivetrain;
+        makeRamsete();
+    }
+
+    private void makeRamsete() {
+        ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
+        new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
+                DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
+                DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+        DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
+        new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+        new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+        // RamseteCommand passes volts to the callback
+        drivetrain::tankLRVolts, drivetrain);
     }
 
     // Called when the command is initially scheduled.
@@ -76,17 +93,6 @@ public class RamseteCommandWrapper extends CommandBase {
 
         // Start the pathFollowCommand
         if (trajectory != null) {
-
-            // Create the RamseteCommand based on the drivetrain's constants
-            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
-                    new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
-                            DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
-                            DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
-                    DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
-                    new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
-                    new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
-                    // RamseteCommand passes volts to the callback
-                    drivetrain::tankLRVolts, drivetrain);
 
             drivetrain.resetOdometry(trajectory.getInitialPose());
 
@@ -113,18 +119,24 @@ public class RamseteCommandWrapper extends CommandBase {
     }
 
     public enum AutoPaths {
-        barrel_racing("barrel_racing"), test1("test1"), circle("circle"), slolom("slolom");
+        barrel_racing("barrel_racing"), test1("test1"), circle("circle"), slolom("slolom"), bounce("bounce"),
+        bounce1("bounce1"), bounce2("bounce2"), bounce3("bounce3"), bounce4("bounce4");
 
         public final Path path;
         public Trajectory trajectory;
+        public boolean reversed;
 
-        private AutoPaths(String fileName) {
+        private AutoPaths(String fileName, boolean reversed) {
             path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
             try {
                 this.trajectory = TrajectoryUtil.fromPathweaverJson(path);
             } catch (IOException e) {
                 this.trajectory = null;
             }
+        }
+
+        private AutoPaths(String fileName) {
+            this(fileName, false);
         }
     }
 }

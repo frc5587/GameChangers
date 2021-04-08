@@ -92,8 +92,8 @@ public class LimelightCentering extends CommandBase {
         }
 
         double diffDeg = Math.IEEEremainder(lastAngle - drivetrain.getHeading180(), 180);
-        double diffV = Math.pow(MathUtil.clamp(diffDeg/(LimelightConstants.HFOV/2), -1, 1), 3) * 0.8;
-        System.out.println("" + lastAngle + "   " + diffV + "   " + diffDeg);
+        double diffV = Math.copySign(Math.pow(MathUtil.clamp(Math.abs(diffDeg/(LimelightConstants.HFOV/2)), 0, 1), 1.8), diffDeg);
+        System.out.println("" + lastAngle + "   " + diffV + "   " + diffDeg + "   " + drivetrain.getHeading180());
 
         drivetrain.tankLR(diffV, -diffV);
     }
