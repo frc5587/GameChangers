@@ -10,6 +10,8 @@ public class Shooter extends FixedHoodedShooterBase {
     public Shooter() {
         super(ShooterConstants.MOTOR_ONE, ShooterConstants.MOTOR_TWO);
 
+        ShooterConstants.SHOOTER_JRAD_CONTROLLER.setVelocitySupplier(this::getVelocityRPS);
+
         setJRADController(ShooterConstants.SHOOTER_JRAD_CONTROLLER);
         setUNP(ShooterConstants.UNP);
     }
@@ -22,7 +24,7 @@ public class Shooter extends FixedHoodedShooterBase {
     @Override
     protected void configureLeaderSpark() {
         leadMotor.restoreFactoryDefaults();
-        leadMotor.setInverted(false);
+        leadMotor.setInverted(true);
         leadMotor.setIdleMode(IdleMode.kCoast);
         leadMotor.setSmartCurrentLimit(40, 35);
     }
@@ -30,7 +32,7 @@ public class Shooter extends FixedHoodedShooterBase {
     @Override
     protected void configureFollowerSpark() {
         followerMotor.restoreFactoryDefaults();
-        followerMotor.setInverted(false);
+        followerMotor.setInverted(true);
         followerMotor.setIdleMode(IdleMode.kCoast);
         followerMotor.setSmartCurrentLimit(40, 35);
     }
