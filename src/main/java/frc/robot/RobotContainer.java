@@ -103,16 +103,10 @@ public class RobotContainer {
         JoystickButton joystickThumb = new JoystickButton(joystick, Joystick.ButtonType.kTop.value);
 
         Trigger leftTrigger = new Trigger(() -> xboxController.getTrigger(Hand.kLeft));
-        // Trigger rightTrigger = new Trigger(() ->
-        // xboxController.getTrigger(Hand.kRight));
 
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
-        // JoystickButton xButton = new JoystickButton(xboxController,
-        // XboxController.Button.kX.value);
-        // JoystickButton leftBumper = new JoystickButton(xboxController,
-        // XboxController.Button.kBumperLeft.value);
 
         joystickThumb.whileActiveContinuous(moveToPowercell);
         joystickTrigger.whileActiveContinuous(moveToAllPowercells);
@@ -127,15 +121,10 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.slolom).andThen(() ->
-        drivetrain.tankLRVolts(0, 0));
-        // return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new Rotation2d(0)),
-        //                 List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)))
-        //                                 .andThen(() -> drivetrain.tankLRVolts(0, 0));
-        // return new RamseteCommandWrapper(drivetrain, new Pose2d(0, 0, new
-        // Rotation2d(0)), List.of(), new Pose2d(3, 0, new Rotation2d(0))).andThen(() ->
-        // drivetrain.tankLRVolts(0, 0));
-        // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0))); //
-        // galactic search
+        //* AUTO PATHS
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.slolom).andThen(() -> drivetrain.tankLRVolts(0, 0));
+
+        //* GALACTIC SEARCH
+        // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));
     }
 }
