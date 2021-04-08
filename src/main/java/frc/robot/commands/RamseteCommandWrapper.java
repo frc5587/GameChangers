@@ -45,26 +45,7 @@ public class RamseteCommandWrapper extends CommandBase {
         addRequirements(drivetrain);
 
         this.drivetrain = drivetrain;
-
-        // Get the path to the trajectory on the RoboRIO's filesystem
-        var trajectoryPath = path.getJSONPath();
-
-        // Get the trajectory based on the file path (throws IOException if not found)
-        Trajectory trajectory = null;
-        try {
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-        } catch (IOException ex) {
-            DriverStation.reportError("Unable to open " + path + " trajectory: " + trajectoryPath, ex.getStackTrace());
-        }
-
-        // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath); // comment
-        // out try catch ^
-
-        // Yell at us if we leave the trajectory at null
-        if (trajectory == null) {
-            throw new NullPointerException();
-        }
-        this.trajectory = trajectory;
+        this.trajectory = path.trajectory;
     }
 
     public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
@@ -98,8 +79,7 @@ public class RamseteCommandWrapper extends CommandBase {
         if (trajectory != null) {
 
             // Create the RamseteCommand based on the drivetrain's constants
-            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose,
-                    new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
+            var ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
                     new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
                             DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
                             DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
@@ -133,37 +113,19 @@ public class RamseteCommandWrapper extends CommandBase {
         drivetrain.stop();
     }
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        if (pathFollowCommand != null) {
-            return !pathFollowCommand.isScheduled();
-        } else {
-            return true;
-        }
-    }
-
     public enum AutoPaths {
-        test;
+        barrel_racing("barrel_racing"), test1("test1"), circle("circle"), slolom("slolom");
 
-        /**
-         * Get the path to the corresponding path JSON file (generated with PathWeaver)
-         * in the roboRIO's filesystem for a given enum value
-         * 
-         * @return the complete path under the roboRIO's filesystem for the
-         *         corresponding path JSON
-         */
-        public Path getJSONPath() {
-            var path = "paths/";
-            switch (this) {
-            case test:
-                path += "test.wpilib.json";
-                break;
+        public final Path path;
+        public Trajectory trajectory;
+
+        private AutoPaths(String fileName) {
+            path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + fileName + ".wpilib.json");
+            try {
+                this.trajectory = TrajectoryUtil.fromPathweaverJson(path);
+            } catch (IOException e) {
+                this.trajectory = null;
             }
-
-            // Join the path with where the code is deployed to on the roboRIO, in order to
-            // get the complete path
-            return Filesystem.getDeployDirectory().toPath().resolve(path);
         }
     }
 }

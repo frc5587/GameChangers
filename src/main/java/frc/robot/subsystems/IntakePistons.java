@@ -9,7 +9,7 @@ public class IntakePistons extends SubsystemBase {
     private DoubleSolenoid piston1 = new DoubleSolenoid(IntakeConstants.PISTON_PORTS[0], IntakeConstants.PISTON_PORTS[1]);
 
     public IntakePistons() {
-        retract(); // idk what this will do but I'm just trying to set the default value to closed
+        extend();
     }
 
     public void extend() {

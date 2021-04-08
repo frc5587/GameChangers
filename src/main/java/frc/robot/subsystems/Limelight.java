@@ -55,6 +55,10 @@ public class Limelight extends SubsystemBase {
         return getDistanceFromOuter() + LimelightConstants.INNER_OUTER_GOAL_DISTANCE;
     }
 
+    public double getHorizontalAngle() {
+        return tx.getDouble(0);
+    }
+
 
     @Override
     public void periodic() {
