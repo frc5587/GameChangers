@@ -7,6 +7,7 @@ package frc.robot;
 import org.frc5587.lib.pid.FPID;
 import org.frc5587.lib.pid.UNP;
 import org.frc5587.lib.pid.JRADShooterController;
+import org.frc5587.lib.pid.JRADTunerHelper;
 import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -88,7 +89,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADShooterController(0.0027, 0.000015, .92);
+        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADTunerHelper("shooter", 0.0027, 0.000015, .92);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
@@ -101,7 +102,7 @@ public final class Constants {
 
     public static class LimelightConstants {
         public static final double LIMELIGHT_HEIGHT = 1;                          // TODO: make correct
-        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(30);  // TODO: make correct
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(68);  // TODO: make correct
 
         public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
@@ -111,7 +112,7 @@ public final class Constants {
 
     public static class IntakeConstants {
         public static final int INTAKE_MOTOR = 60;
-        public static final double THROTTLE = .5;
+        public static final double THROTTLE = .65;
         public static final double MIN_THROTTLE = 0.6;
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;

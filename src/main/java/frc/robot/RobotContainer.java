@@ -26,6 +26,7 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.MoveToPowercell;
 import frc.robot.commands.RamseteCommandWrapper;
 import frc.robot.commands.IntakeForward;
+import frc.robot.commands.LimelightCentering;
 import frc.robot.commands.RamseteCommandWrapper.AutoPaths;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePistons;
@@ -50,7 +51,8 @@ public class RobotContainer {
     private final DeadbandJoystick joystick = new DeadbandJoystick(0);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake);
+    private final LimelightCentering limelightCentering = new LimelightCentering(drivetrain, limelight);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
     private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
     private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);

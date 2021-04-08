@@ -45,8 +45,12 @@ public class Limelight extends SubsystemBase {
         return LimelightConstants.LIMELIGHT_ANGLE + getRelativeVerticalAngle();
     }
 
+    public double getHorizontalAngle() {
+        return tx.getDouble(0);
+    }
+
     public double getDistanceFromOuter() {
-        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT) 
+        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - .38) 
             / Math.tan(getVerticalAngle());
     }
 
