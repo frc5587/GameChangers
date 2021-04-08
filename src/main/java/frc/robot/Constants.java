@@ -5,7 +5,9 @@
 package frc.robot;
 
 import org.frc5587.lib.pid.FPID;
-import org.frc5587.lib.pid.JRAD;
+import org.frc5587.lib.pid.UNP;
+import org.frc5587.lib.pid.JRADShooterController;
+import org.frc5587.lib.pid.JRADTunerHelper;
 import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -87,7 +89,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final JRAD SHOOTER_JRAD = new JRAD(0.0027, 0.000015, .92);
+        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADTunerHelper("shooter", 0.0027, 0.000015, .92);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
@@ -95,22 +97,19 @@ public final class Constants {
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
         public static final double GEAR_RATIO = 16/18;
-
-        public static class RegressionConstants {
-            public static final double U = 106.002;
-            public static final double P = 141188;
-            public static final double N = 19.0896;
-        }
-
+        public static final UNP UNP = new UNP(106.002, 19.0896, 141188);
     }
 
-    public static class LimelightConstants {
+    public static class LimelightConstants {  
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(68);
         public static final double LIMELIGHT_HEIGHT = Units.inchesToMeters(17);
-        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(33);
         public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(15);
 
         public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);
+
+        public static final double VFOV = 41;
+        public static final double HFOV = 54;
     
         public static final double G = ShooterConstants.G;
     }

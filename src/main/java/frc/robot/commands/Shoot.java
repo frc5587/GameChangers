@@ -6,17 +6,15 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.Constants.ShooterConstants.RegressionConstants;
 
 public class Shoot extends CommandBase {
     private Shooter shooter;
     private Limelight limelight;
     private Conveyor conveyor;
     private Intake intake;
-    private boolean active = false;
     private LimelightCentering limelightCentering;
 
-    private static double defaultSpinUpSpeed = 3000;  // RPM
+    private static double defaultSpinUpSpeedRPS = 40;
     
     public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering) {
         super();
@@ -34,16 +32,14 @@ public class Shoot extends CommandBase {
     @Override
     public void initialize() {
         limelight.turnOn();
-        shooter.enableJRAD();
+        shooter.enableJRADControl();
         limelightCentering.schedule();
-
-        active = true;
     }
 
     @Override
     public void end(boolean interrupted) {
-        limelight.turnOff();
-        shooter.disableJRAD();
+        // limelight.turnOff();
+        shooter.disableJRADControl();
         conveyor.stopShooterConveyor();
         intake.stop();
         limelightCentering.cancel();
@@ -52,24 +48,20 @@ public class Shoot extends CommandBase {
     public void updateShooter() {
         double distance = limelight.getDistanceFromInner();
 
-        double wheelRPM = (RegressionConstants.U * distance) + (RegressionConstants.P/(Math.pow(distance, 2) - RegressionConstants.N)); 
-
-        shooter.setVelocity(wheelRPM);
+        shooter.calculateAndSetVelocity(distance);
     }
 
     @Override
     public void execute() {
-        if (active) {
-            if (limelight.isTargetDetected()) {
-                updateShooter();
-            } else {
-                shooter.setVelocity(defaultSpinUpSpeed);
-            }
+        if (limelight.isTargetDetected()) {
+            updateShooter();
+        } else {
+            shooter.setVelocityRPS(defaultSpinUpSpeedRPS);
+        }
 
-            if (shooter.atSetpoint()) {
-                conveyor.shooterConveyor();
-                intake.moveForward();
-            }
+        if (shooter.atSetpoint()) {
+            conveyor.shooterConveyor();
+            intake.moveForward();
         }
     }
 }
