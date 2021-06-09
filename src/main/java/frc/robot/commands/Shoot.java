@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
@@ -14,7 +13,7 @@ public class Shoot extends CommandBase {
     private Intake intake;
     private LimelightCentering limelightCentering;
 
-    private static double defaultSpinUpSpeedRPS = 40;
+    private static double defaultDistance = 4.8;
     
     public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering) {
         super();
@@ -26,20 +25,19 @@ public class Shoot extends CommandBase {
         this.limelightCentering = limelightCentering;
         
         addRequirements(shooter, conveyor);
-        SmartDashboard.putNumber("try velocity RPM", 0);
     }
 
     @Override
     public void initialize() {
         limelight.turnOn();
-        shooter.enableJRADControl();
+        shooter.enableDistanceControl();
         // limelightCentering.schedule();
     }
 
     @Override
     public void end(boolean interrupted) {
         // limelight.turnOff();
-        shooter.disableJRADControl();
+        shooter.disableDistanceControl();
         conveyor.stopShooterConveyor();
         intake.stop();
         // limelightCentering.cancel();
@@ -48,7 +46,7 @@ public class Shoot extends CommandBase {
     public void updateShooter() {
         double distance = limelight.getDistanceFromInner();
 
-        shooter.calculateAndSetVelocity(distance);
+        shooter.setDistanceFromTarget(distance);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class Shoot extends CommandBase {
         if (limelight.isTargetDetected()) {
             updateShooter();
         } else {
-            shooter.setVelocityRPS(defaultSpinUpSpeedRPS);
+            shooter.setDistanceFromTarget(defaultDistance);
         }
 
         if (shooter.atSetpoint()) {

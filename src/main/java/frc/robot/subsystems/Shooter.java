@@ -10,10 +10,7 @@ public class Shooter extends FixedHoodedShooterBase {
     public Shooter() {
         super(ShooterConstants.MOTOR_ONE, ShooterConstants.MOTOR_TWO);
 
-        ShooterConstants.SHOOTER_JRAD_CONTROLLER.setVelocitySupplier(this::getVelocityRPS);
-
-        setJRADController(ShooterConstants.SHOOTER_JRAD_CONTROLLER);
-        setUNP(ShooterConstants.UNP);
+        ShooterConstants.SHOOTER_CONTROLLER.setVelocitySupplier(this::getVelocityRPS);
     }
 
     @Override

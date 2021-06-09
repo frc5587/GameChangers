@@ -4,10 +4,11 @@
 
 package frc.robot;
 
+import org.frc5587.lib.controllers.JRADShooterController;
+import org.frc5587.lib.controllers.UnifiedShooterController;
+import org.frc5587.lib.controllers.tunerHelpers.JRADTunerHelper;
 import org.frc5587.lib.pid.FPID;
 import org.frc5587.lib.pid.UNP;
-import org.frc5587.lib.pid.JRADShooterController;
-import org.frc5587.lib.pid.JRADTunerHelper;
 import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -89,7 +90,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final JRADShooterController SHOOTER_JRAD_CONTROLLER = new JRADShooterController(0.0027, 0.000015, .92);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.0027, 0.000015, 5.46196, 38.1225, 1.72241);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
@@ -97,7 +98,6 @@ public final class Constants {
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
         public static final double GEAR_RATIO = 16/18;
-        public static final UNP UNP = new UNP(106.002, 19.0896, 141188);
     }
 
     public static class LimelightConstants {  
