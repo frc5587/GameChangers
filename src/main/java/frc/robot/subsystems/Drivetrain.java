@@ -280,7 +280,6 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public Pose2d getPose() {
-        // var val = ; 
         return odometry.getPoseMeters();
     }
 

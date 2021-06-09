@@ -70,6 +70,10 @@ public class LimelightCentering extends CommandBase {
         return (drivetrain.atSetpoint() && timer.get() >= 0.5);
     }
 
+    public void setAngle(double angle) {
+        lastAngle = angle;
+    }
+
     /**
      * Updates the setpoint of the drivetrain's angle PID loop based on the angle
      * from the target as determined by the Limelight and the drivetrain's current
@@ -83,18 +87,24 @@ public class LimelightCentering extends CommandBase {
      * @see Drivetrain#enable()
      */
     private void updatePID() {
-
+        double desiredAngle;
+    
         if (limelight.isTargetDetected()) {
-            // Get the difference between centre and vision target (error)
-            var angleError = limelight.getHorizontalAngle();
-
-            lastAngle = Math.IEEEremainder(drivetrain.getHeading180() + angleError, 180);
+          // Get the difference between centre and vision target (error)
+          var angleError = limelight.getHorizontalAngle();
+    
+          // Calculate the desired angle using the error and current angle
+          var currentHeading = drivetrain.getHeading180();
+          desiredAngle = currentHeading - angleError;
+        } else if (drivetrain.getLastAngleSetpoint() != Double.NaN) {
+          // Default to the last registered setpoint and search for target along the way
+          // TODO: Check that this doesn't lead to early finishing of Command
+          desiredAngle = drivetrain.getLastAngleSetpoint();
+        } else {
+          desiredAngle = drivetrain.getHeading180();
         }
-
-        double diffDeg = Math.IEEEremainder(lastAngle - drivetrain.getHeading180(), 180);
-        double diffV = Math.copySign(Math.pow(MathUtil.clamp(Math.abs(diffDeg/(LimelightConstants.HFOV/2)), 0, 1), 1.8), diffDeg);
-        System.out.println("" + lastAngle + "   " + diffV + "   " + diffDeg + "   " + drivetrain.getHeading180());
-
-        drivetrain.tankLR(diffV, -diffV);
+    
+        // Set the angle PID controller to the desired angle
+        drivetrain.setSetpoint(desiredAngle);
     }
 }

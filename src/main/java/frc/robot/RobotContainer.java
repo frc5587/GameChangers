@@ -57,7 +57,7 @@ public class RobotContainer {
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
     private final LimelightCentering limelightCentering = new LimelightCentering(drivetrain, limelight);
-    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering);
+    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering, drivetrain);
     private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
     private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
     private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
