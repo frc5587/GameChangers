@@ -7,6 +7,9 @@ package frc.robot;
 import java.io.IOException;
 import java.util.List;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import org.frc5587.lib.control.DeadbandJoystick;
 import org.frc5587.lib.control.DeadbandXboxController;
 
@@ -91,6 +94,7 @@ public class RobotContainer {
 
         JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
         JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
+        JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
         joystickThumb.whileActiveContinuous(moveToPowercell);

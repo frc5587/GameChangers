@@ -71,6 +71,7 @@ public class Shoot extends CommandBase {
 
             updateShooter();
         } else {
+            System.out.println(defaultDistance);
             shooter.setDistanceFromTarget(defaultDistance);
         }
 
@@ -78,5 +79,7 @@ public class Shoot extends CommandBase {
             conveyor.shooterConveyor();
             intake.moveForward();
         }
+
+        this.
     }
 }

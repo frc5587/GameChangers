@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public final class Constants {
     public static final class ConveyorConstants {
-        public static final double CONVEYOR_THROTTLE_FRONT = 0.5;
+        public static final double CONVEYOR_THROTTLE_FRONT = 0.75;
         public static final double CONVEYOR_THROTTLE_BACK = 0.375;
 
         public static final int CONVEYOR_MOTOR_FRONT = 40;
@@ -116,7 +116,7 @@ public final class Constants {
 
     public static class IntakeConstants {
         public static final int INTAKE_MOTOR = 60;
-        public static final double THROTTLE = 1;
+        public static final double THROTTLE = .5;
         public static final double MIN_THROTTLE = 0.6;
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;
