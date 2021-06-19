@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import org.frc5587.lib.data.ObjectTracker;
+import org.frc5587.lib.advanced.ObjectTracker;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
