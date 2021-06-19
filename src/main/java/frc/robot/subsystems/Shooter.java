@@ -22,7 +22,7 @@ public class Shooter extends FixedHoodedShooterBase {
     @Override
     protected void configureLeaderSpark() {
         leadMotor.restoreFactoryDefaults();
-        leadMotor.setInverted(true);
+        leadMotor.setInverted(false);
         leadMotor.setIdleMode(IdleMode.kCoast);
         leadMotor.setSmartCurrentLimit(40, 35);
     }

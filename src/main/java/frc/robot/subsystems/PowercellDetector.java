@@ -41,7 +41,6 @@ public class PowercellDetector extends SubsystemBase {
      * @return if powercells are seen
      */
     public boolean seesPowercell() {
-        System.out.println(tn.exists());
         return numPowercells() > 0;
     }
 

@@ -65,13 +65,11 @@ public class Shoot extends CommandBase {
         Pose2d robotPose = drivetrain.getPose();
         
         powerPortTracker.setRobotPosition(robotPose.getX(), robotPose.getY());
-
         if (limelight.isTargetDetected()) {
             powerPortTracker.setObjectRelativePosition(limelight.getDistanceFromInner(), Math.toRadians(robotPose.getRotation().getDegrees() - limelight.getHorizontalAngle()));
 
             updateShooter();
         } else {
-            System.out.println(defaultDistance);
             shooter.setDistanceFromTarget(defaultDistance);
         }
 
@@ -79,7 +77,5 @@ public class Shoot extends CommandBase {
             conveyor.shooterConveyor();
             intake.moveForward();
         }
-
-        this.
     }
 }
