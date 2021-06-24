@@ -104,8 +104,8 @@ public class Drivetrain extends PIDSubsystem {
         SmartDashboard.putNumber("left enc", leftEncoder.getPosition());
         SmartDashboard.putNumber("right enc", rightEncoder.getPosition());
         SmartDashboard.putNumber("gyro", ahrs.getAngle());
-        SmartDashboard.putNumber("thing that max wants (x)", ahrs.getDisplacementX());
-        SmartDashboard.putNumber("thing that max wants (y)", ahrs.getDisplacementY());
+        SmartDashboard.putNumber("displacement (x)", ahrs.getDisplacementX());
+        SmartDashboard.putNumber("displacement (y)", ahrs.getDisplacementY());
         // System.out.println("ahrs: " + ahrs.getAngle());
         // System.out.println("lv: " + leftEncoder.getPosition() + " rv: " + rightEncoder.getPosition());
     }
@@ -378,7 +378,6 @@ public class Drivetrain extends PIDSubsystem {
         var translation = odometry.getPoseMeters().getTranslation();
         SmartDashboard.putNumber("tx", translation.getX());
         SmartDashboard.putNumber("ty", translation.getY());
-        // SmartDashboard.putNumber("angle", odo
 
         // Log the pose
         poseHistory.put(Timer.getFPGATimestamp(), getPose());

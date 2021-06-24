@@ -51,8 +51,6 @@ public class Limelight extends SubsystemBase {
     }
 
     public double getDistanceFromOuter() {
-        System.out.println("" + (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - LimelightConstants.VERTICAL_GOAL_OFFSET) + "   " + Math.toDegrees(getVerticalAngle()));
-
         return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - LimelightConstants.VERTICAL_GOAL_OFFSET) 
             / Math.tan(getVerticalAngle());
     }
