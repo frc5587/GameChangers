@@ -51,7 +51,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void reverse() {
-        conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_THROTTLE_BACK);
+        conveyorMotorFront.set(-ConveyorConstants.CONVEYOR_THROTTLE_FRONT);
     }
 
     public void stopIntakeConveyor() {

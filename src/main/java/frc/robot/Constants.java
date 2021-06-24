@@ -7,6 +7,7 @@ package frc.robot;
 import org.frc5587.lib.controllers.JRADShooterController;
 import org.frc5587.lib.controllers.UnifiedShooterController;
 import org.frc5587.lib.controllers.tunerHelpers.JRADTunerHelper;
+import org.frc5587.lib.controllers.tunerHelpers.UnifiedShooterControllerTunerHelper;
 import org.frc5587.lib.pid.FPID;
 import org.frc5587.lib.pid.UNP;
 import org.frc5587.lib.pid.PID;
@@ -26,8 +27,8 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public final class Constants {
     public static final class ConveyorConstants {
-        public static final double CONVEYOR_THROTTLE_FRONT = 0.75;
-        public static final double CONVEYOR_THROTTLE_BACK = 0.375;
+        public static final double CONVEYOR_THROTTLE_FRONT = 0.4;
+        public static final double CONVEYOR_THROTTLE_BACK = .4;
 
         public static final int CONVEYOR_MOTOR_FRONT = 40;
         public static final int CONVEYOR_MOTOR_BACK = 50;
@@ -90,20 +91,20 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.0027, 0.000015, 5.46196, 38.1225, 1.72241);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.165, 5.46196, 38.1225, 1.72241);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
-        public static final double GOAL_HEIGHT = 2.502;
+        public static final double GOAL_HEIGHT = 2.41; // TODO change to 2.495 for real field
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
         public static final double GEAR_RATIO = 16/18;
     }
 
     public static class LimelightConstants {  
-        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(68);
+        public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(31.5);
         public static final double LIMELIGHT_HEIGHT = Units.inchesToMeters(17);
-        public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(15);
+        public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(19);
 
         public static final double GOAL_HEIGHT = ShooterConstants.GOAL_HEIGHT;
         public static final double INNER_OUTER_GOAL_DISTANCE = Units.inchesToMeters(29.25);

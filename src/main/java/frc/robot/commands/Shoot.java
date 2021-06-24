@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import org.frc5587.lib.advanced.ObjectTracker;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
@@ -19,7 +20,9 @@ public class Shoot extends CommandBase {
     private Drivetrain drivetrain;
     private ObjectTracker powerPortTracker = new ObjectTracker();
 
+    private Timer conveyorTimer = new Timer();
     private static double defaultDistance = 4.8;
+    private static double backwardsConveyorTime = .15;
     
     public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering, Drivetrain drivetrain) {
         super();
@@ -36,6 +39,9 @@ public class Shoot extends CommandBase {
 
     @Override
     public void initialize() {
+        conveyorTimer.reset();
+        conveyorTimer.start();
+        conveyor.reverse();
         limelight.turnOn();
         shooter.enableDistanceControl();
 
@@ -65,9 +71,9 @@ public class Shoot extends CommandBase {
         Pose2d robotPose = drivetrain.getPose();
         
         powerPortTracker.setRobotPosition(robotPose.getX(), robotPose.getY());
+        
         if (limelight.isTargetDetected()) {
             powerPortTracker.setObjectRelativePosition(limelight.getDistanceFromInner(), Math.toRadians(robotPose.getRotation().getDegrees() - limelight.getHorizontalAngle()));
-
             updateShooter();
         } else {
             shooter.setDistanceFromTarget(defaultDistance);
@@ -76,6 +82,12 @@ public class Shoot extends CommandBase {
         if (shooter.atSetpoint()) {
             conveyor.shooterConveyor();
             intake.moveForward();
+        }
+
+        if (conveyorTimer.hasElapsed(backwardsConveyorTime)) {
+            conveyor.stopIntakeConveyor();
+            conveyorTimer.stop();
+            conveyorTimer.reset();
         }
     }
 }

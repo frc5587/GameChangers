@@ -101,6 +101,7 @@ public class RobotContainer {
         joystickTrigger.whileActiveContinuous(moveToAllPowercells);
 
         aButton.whileActiveContinuous(shoot);
+        // aButton.whileActiveContinuous(() -> {shooter.setThrottle(1);}, shooter);
         rightTrigger.whileActiveContinuous(limelightCentering);
 
         rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
