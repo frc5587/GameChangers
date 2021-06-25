@@ -21,8 +21,10 @@ public class Shoot extends CommandBase {
     private ObjectTracker powerPortTracker = new ObjectTracker();
 
     private Timer conveyorTimer = new Timer();
+    private Timer otherConveyorTimer = new Timer();
     private static double defaultDistance = 4.8;
     private static double backwardsConveyorTime = .15;
+    private static double backDelay = .15;
     
     public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering, Drivetrain drivetrain) {
         super();
@@ -53,11 +55,14 @@ public class Shoot extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        // limelight.turnOff();
+        limelight.turnOff();
         shooter.disableDistanceControl();
         conveyor.stopShooterConveyor();
         intake.stop();
         // limelightCentering.cancel();
+
+        otherConveyorTimer.stop();
+        otherConveyorTimer.reset();
     }
 
     public void updateShooter() {
@@ -80,6 +85,11 @@ public class Shoot extends CommandBase {
         }
 
         if (shooter.atSetpoint()) {
+            otherConveyorTimer.start();
+            conveyor.backConveyor();
+        }
+
+        if (otherConveyorTimer.hasElapsed(backDelay)) {
             conveyor.shooterConveyor();
             intake.moveForward();
         }

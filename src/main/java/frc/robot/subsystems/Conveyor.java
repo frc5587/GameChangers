@@ -40,6 +40,11 @@ public class Conveyor extends SubsystemBase {
 
     }
 
+    public void backConveyor() {
+        conveyorMotorBack.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
+        conveyorMotorBackTwo.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);
+    }
+
     public void shooterConveyor() {
         conveyorMotorFront.set(ConveyorConstants.CONVEYOR_THROTTLE_FRONT);
         conveyorMotorBack.set(ConveyorConstants.CONVEYOR_THROTTLE_BACK);

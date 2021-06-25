@@ -91,7 +91,7 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.165, 5.46196, 38.1225, 1.72241);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.165, 8.3718, 5.78, 1.6621);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
@@ -117,7 +117,7 @@ public final class Constants {
 
     public static class IntakeConstants {
         public static final int INTAKE_MOTOR = 60;
-        public static final double THROTTLE = .5;
+        public static final double THROTTLE = .75;
         public static final double MIN_THROTTLE = 0.6;
         public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
         public static final double VELOCITY_MULTIPLIER = 2;
