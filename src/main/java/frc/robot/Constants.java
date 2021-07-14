@@ -70,11 +70,11 @@ public final class Constants {
         public static final double TURN_PID_UPDATE_PERIOD_SEC = 0.010;
 
         // Values from characterisation
-        public static final double KS_VOLTS = 0.144;
-        public static final double KV_VOLT_SECONDS_PER_METER = 0.354;
-        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0249;
+        public static final double KS_VOLTS = 0.152; //used to be 0.144
+        public static final double KV_VOLT_SECONDS_PER_METER = 0.193; //used to be 0.354
+        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0315; //used to be 0.0249
         public static final double TRACK_WIDTH_METERS = 0.58; // measured
-        public static final double RAMSETE_KP_DRIVE_VEL = 1.82; // Raw from charact. fixed
+        public static final double RAMSETE_KP_DRIVE_VEL = 3.27; // Raw from charact. fixed: used to be 3.27
 
         // Basic differential drivetrain kinematics constants
         public static final int TICKS_PER_REV = 8192;
@@ -91,7 +91,8 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.165, 8.3718, 5.78, 1.6621);
+        // public static final UnifiedShooterControllerTunerHelper SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.165, 8.3718, 5.78, 1.6621);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.12835, 8.3718, 5.78, 1.6621);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
