@@ -17,9 +17,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.Shoot;
@@ -55,6 +57,7 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final IntakePistons intakePistons = new IntakePistons();
     private final Conveyor conveyor = new Conveyor();
+    private final Climber climber = new Climber();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0, 1.5);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
@@ -97,18 +100,28 @@ public class RobotContainer {
         JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
         JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kBumperRight.value);
 
+        POVButton upDPad = new POVButton(xboxController, 0);
+        POVButton downDPad = new POVButton(xboxController, 180);
+
         joystickThumb.whileActiveContinuous(moveToPowercell);
         joystickTrigger.whileActiveContinuous(moveToAllPowercells);
 
+        // shooting
         aButton.whileActiveContinuous(shoot);
         // aButton.whileActiveContinuous(() -> {shooter.setThrottle(1);}, shooter);
         rightTrigger.whileActiveContinuous(limelightCentering);
 
+        // intake pistons
         rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
         rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
 
+        // moving intake
         bButton.and(leftTrigger.negate()).whileActiveContinuous(intakeForward);
         bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
+
+        // climb
+        upDPad.whenActive(() -> climber.moveUp(), climber).whenInactive(() -> climber.stopClimber(), climber);
+        downDPad.whenActive(() -> climber.moveDown(), climber).whenInactive(() -> climber.stopClimber(), climber);
     }
 
     public Command getAutonomousCommand() {

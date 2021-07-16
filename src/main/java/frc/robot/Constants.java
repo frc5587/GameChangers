@@ -126,4 +126,9 @@ public final class Constants {
 
         public static final int[] PISTON_PORTS = {0, 1};
     }
+
+    public static class ClimberConstants {
+        public static final int CLIMBER_MOTOR = 70;
+        public static final double CLIMBER_THROTTLE = .75;
+    }
 }
