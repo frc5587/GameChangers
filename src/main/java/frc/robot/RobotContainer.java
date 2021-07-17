@@ -103,8 +103,8 @@ public class RobotContainer {
         POVButton upDPad = new POVButton(xboxController, 0);
         POVButton downDPad = new POVButton(xboxController, 180);
 
-        joystickThumb.whileActiveContinuous(moveToPowercell);
-        joystickTrigger.whileActiveContinuous(moveToAllPowercells);
+        // joystickThumb.whileActiveContinuous(moveToPowercell);
+        // joystickTrigger.whileActiveContinuous(moveToAllPowercells);
 
         // shooting
         aButton.whileActiveContinuous(shoot);
