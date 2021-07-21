@@ -91,8 +91,8 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        // public static final UnifiedShooterControllerTunerHelper SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.165, 8.3718, 5.78, 1.6621);
-        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.12835, 8.3718, 5.78, 1.6621);
+        // public static final UnifiedShooterControllerTunerHelper SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.12835, 7.68982, 44.7915, 1.02746);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.12835, 7.68982, 44.7915, 1.02746);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
@@ -128,7 +128,7 @@ public final class Constants {
     }
 
     public static class ClimberConstants {
-        public static final int CLIMBER_MOTOR = 70;
-        public static final double CLIMBER_THROTTLE = .75;
+        public static final int CLIMBER_MOTOR = 59;
+        public static final double CLIMBER_THROTTLE = .5;
     }
 }
