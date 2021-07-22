@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import org.frc5587.lib.advanced.ObjectTracker;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,8 +26,9 @@ public class Shoot extends CommandBase {
     private static double defaultDistance = 4.8;
     private static double backwardsConveyorTime = .15;
     private static double backDelay = .15;
-    
-    public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake, LimelightCentering limelightCentering, Drivetrain drivetrain) {
+
+    public Shoot(Shooter shooter, Limelight limelight, Conveyor conveyor, Intake intake,
+            LimelightCentering limelightCentering, Drivetrain drivetrain) {
         super();
 
         this.shooter = shooter;
@@ -35,7 +37,7 @@ public class Shoot extends CommandBase {
         this.intake = intake;
         this.drivetrain = drivetrain;
         this.limelightCentering = limelightCentering;
-        
+
         addRequirements(shooter, conveyor);
     }
 
@@ -68,17 +70,24 @@ public class Shoot extends CommandBase {
     public void updateShooter() {
         double distance = limelight.getDistanceFromInner();
 
-        shooter.setDistanceFromTarget(distance);
+        if (distance > 6.5) {
+            shooter.setDistanceFromTarget(.80 * distance);
+        } else if (distance > 5) {
+            shooter.setDistanceFromTarget(.80 * distance);
+        } else {
+            shooter.setDistanceFromTarget(distance);
+        }
     }
 
     @Override
     public void execute() {
         Pose2d robotPose = drivetrain.getPose();
-        
+
         powerPortTracker.setRobotPosition(robotPose.getX(), robotPose.getY());
-        
+
         if (limelight.isTargetDetected()) {
-            powerPortTracker.setObjectRelativePosition(limelight.getDistanceFromInner(), Math.toRadians(robotPose.getRotation().getDegrees() - limelight.getHorizontalAngle()));
+            powerPortTracker.setObjectRelativePosition(limelight.getDistanceFromInner(),
+                    Math.toRadians(robotPose.getRotation().getDegrees() - limelight.getHorizontalAngle()));
             updateShooter();
         } else {
             shooter.setDistanceFromTarget(defaultDistance);
@@ -99,5 +108,7 @@ public class Shoot extends CommandBase {
             conveyorTimer.stop();
             conveyorTimer.reset();
         }
+
+        SmartDashboard.putNumber("distance from target", limelight.getDistanceFromInner());
     }
 }

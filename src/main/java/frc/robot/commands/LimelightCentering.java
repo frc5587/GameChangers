@@ -43,6 +43,7 @@ public class LimelightCentering extends CommandBase {
     public void initialize() {
         timer.reset();
         timer.start();
+        limelight.turnOn();
         // Run the update method based on the given period
         notifier.startPeriodic(Constants.DrivetrainConstants.TURN_PID_UPDATE_PERIOD_SEC);
 
@@ -57,6 +58,7 @@ public class LimelightCentering extends CommandBase {
         // Stop the drivetrain and PID controller
         drivetrain.stop();
         drivetrain.disable();
+        limelight.turnOff();
 
         // Stop the notifier from updating again
         notifier.stop();
@@ -88,22 +90,22 @@ public class LimelightCentering extends CommandBase {
      */
     private void updatePID() {
         double desiredAngle;
-    
+
         if (limelight.isTargetDetected()) {
-          // Get the difference between centre and vision target (error)
-          var angleError = limelight.getHorizontalAngle();
-    
-          // Calculate the desired angle using the error and current angle
-          var currentHeading = drivetrain.getHeading180();
-          desiredAngle = currentHeading - angleError;
+            // Get the difference between centre and vision target (error)
+            var angleError = limelight.getHorizontalAngle();
+
+            // Calculate the desired angle using the error and current angle
+            var currentHeading = drivetrain.getHeading180();
+            desiredAngle = currentHeading - angleError;
         } else if (drivetrain.getLastAngleSetpoint() != Double.NaN) {
-          // Default to the last registered setpoint and search for target along the way
-          // TODO: Check that this doesn't lead to early finishing of Command
-          desiredAngle = drivetrain.getLastAngleSetpoint();
+            // Default to the last registered setpoint and search for target along the way
+            // TODO: Check that this doesn't lead to early finishing of Command
+            desiredAngle = drivetrain.getLastAngleSetpoint();
         } else {
-          desiredAngle = drivetrain.getHeading180();
+            desiredAngle = drivetrain.getHeading180();
         }
-    
+
         // Set the angle PID controller to the desired angle
         drivetrain.setSetpoint(desiredAngle);
     }

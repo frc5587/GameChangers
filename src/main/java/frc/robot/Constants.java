@@ -70,9 +70,9 @@ public final class Constants {
         public static final double TURN_PID_UPDATE_PERIOD_SEC = 0.010;
 
         // Values from characterisation
-        public static final double KS_VOLTS = 0.152; //used to be 0.144
-        public static final double KV_VOLT_SECONDS_PER_METER = 0.193; //used to be 0.354
-        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0315; //used to be 0.0249
+        public static final double KS_VOLTS = 0.152; // used to be 0.144
+        public static final double KV_VOLT_SECONDS_PER_METER = 0.193; // used to be 0.354
+        public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0315; // used to be 0.0249
         public static final double TRACK_WIDTH_METERS = 0.58; // measured
         public static final double RAMSETE_KP_DRIVE_VEL = 3.27; // Raw from charact. fixed: used to be 3.27
 
@@ -91,18 +91,21 @@ public final class Constants {
         public static final int MOTOR_ONE = 30;
         public static final int MOTOR_TWO = 31;
 
-        // public static final UnifiedShooterControllerTunerHelper SHOOTER_CONTROLLER = new UnifiedShooterControllerTunerHelper("shooter", 0.00001, 0.12835, 7.68982, 44.7915, 1.02746);
-        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.12835, 7.68982, 44.7915, 1.02746);
+        // public static final UnifiedShooterControllerTunerHelper SHOOTER_CONTROLLER =
+        // new UnifiedShooterControllerTunerHelper("shooter", 0.0000, 0.12235, 7.68982,
+        // 44.7915, 1.02746);
+        public static final UnifiedShooterController SHOOTER_CONTROLLER = new UnifiedShooterController(0.00001, 0.12235,
+                7.68982, 44.7915, 1.02746);
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
         public static final double GOAL_HEIGHT = 2.41; // TODO change to 2.495 for real field
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
-        public static final double GEAR_RATIO = 16/18;
+        public static final double GEAR_RATIO = 16 / 18;
     }
 
-    public static class LimelightConstants {  
+    public static class LimelightConstants {
         public static final double LIMELIGHT_ANGLE = Units.degreesToRadians(31.5);
         public static final double LIMELIGHT_HEIGHT = Units.inchesToMeters(17);
         public static final double VERTICAL_GOAL_OFFSET = Units.inchesToMeters(19);
@@ -112,7 +115,7 @@ public final class Constants {
 
         public static final double VFOV = 41;
         public static final double HFOV = 54;
-    
+
         public static final double G = ShooterConstants.G;
     }
 
@@ -120,11 +123,11 @@ public final class Constants {
         public static final int INTAKE_MOTOR = 60;
         public static final double THROTTLE = .75;
         public static final double MIN_THROTTLE = 0.6;
-        public static final double INTAKE_RADIUS_METERS = 0.1;                     // TODO: make correct 
+        public static final double INTAKE_RADIUS_METERS = 0.1; // TODO: make correct
         public static final double VELOCITY_MULTIPLIER = 2;
         public static final PID PID = new PID(0, 0, 0);
 
-        public static final int[] PISTON_PORTS = {0, 1};
+        public static final int[] PISTON_PORTS = { 0, 1 };
     }
 
     public static class ClimberConstants {
