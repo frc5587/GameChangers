@@ -20,7 +20,7 @@ public class Climber extends SubsystemBase {
     private void configureSpark() {
         climberMotor.restoreFactoryDefaults();
 
-        climberMotor.setInverted(true);
+        climberMotor.setInverted(false);
         climberMotor.setSmartCurrentLimit(35, 40);
 
         climberMotor.setIdleMode(IdleMode.kBrake);
@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
      * Move climber down
      */
     public void moveDown() {
-        climberMotor.set(ClimberConstants.CLIMBER_THROTTLE);
+        climberMotor.set(-ClimberConstants.CLIMBER_THROTTLE);
     }
 
     /**
