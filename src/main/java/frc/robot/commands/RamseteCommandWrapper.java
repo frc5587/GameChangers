@@ -120,7 +120,7 @@ public class RamseteCommandWrapper extends CommandBase {
 
     public enum AutoPaths {
         barrel_racing("barrel_racing"), test1("test1"), circle("circle"), slolom("slolom"), bounce("bounce"),
-        bounce1("bounce1"), bounce2("bounce2"), bounce3("bounce3"), bounce4("bounce4");
+        bounce1("bounce1"), bounce2("bounce2"), bounce3("bounce3"), bounce4("bounce4"), straight_hopefully("straight_hopefully");
 
         public final Path path;
         public Trajectory trajectory;

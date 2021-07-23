@@ -4,6 +4,6 @@
   "maxVelocity": 2.5,
   "maxAcceleration": 4.0,
   "wheelBase": 2.2534879757218,
-  "gameName": "Bounce Path",
+  "gameName": "Infinite Recharge",
   "outputDir": "../src/main/deploy/paths"
 }

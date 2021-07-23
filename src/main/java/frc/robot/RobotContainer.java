@@ -126,7 +126,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         //* AUTO PATHS
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.circle).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return new RamseteCommandWrapper(drivetrain, AutoPaths.straight_hopefully).andThen(() -> drivetrain.tankLRVolts(0, 0));
         
         //* GALACTIC SEARCH
         // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));
