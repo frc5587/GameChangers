@@ -99,7 +99,7 @@ public final class Constants {
 
         public static final double WHEEL_RADIUS = Units.inchesToMeters(3);
         public static final double SHOOTER_HEIGHT = 1;
-        public static final double GOAL_HEIGHT = 2.41; // TODO change to 2.495 for real field
+        public static final double GOAL_HEIGHT = 2.495; // previously 2.41
         public static final double G = 9.806;
         public static final double SHOOTER_ANGLE = Units.degreesToRadians(55);
         public static final double GEAR_RATIO = 16 / 18;
