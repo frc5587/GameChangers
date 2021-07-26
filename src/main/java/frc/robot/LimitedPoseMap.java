@@ -5,8 +5,8 @@ import java.util.TreeMap;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 
 /**
- * A modified {@link TreeMap} for storing a limited number of timestamps and the
- * position of the robot at the timestamp as a set of Double and {@link Pose2d}
+ * A modified {@link TreeMap} for storing a limited number of timestamps and th
+ * 
  * pairs.
  * 
  * <p>

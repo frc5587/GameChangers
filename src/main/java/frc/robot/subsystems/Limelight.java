@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.LimelightConstants;
 
 /**
@@ -15,6 +15,7 @@ public class Limelight extends SubsystemBase {
     public NetworkTableEntry tv = limelightTable.getEntry("tv");
     public NetworkTableEntry tx = limelightTable.getEntry("tx");
     public NetworkTableEntry ty = limelightTable.getEntry("ty");
+    private NetworkTableEntry ledMode = limelightTable.getEntry("ledMode");
     public double lastDistance;
     private boolean lightOn = false;
 
@@ -45,8 +46,12 @@ public class Limelight extends SubsystemBase {
         return LimelightConstants.LIMELIGHT_ANGLE + getRelativeVerticalAngle();
     }
 
+    public double getHorizontalAngle() {
+        return tx.getDouble(0);
+    }
+
     public double getDistanceFromOuter() {
-        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT) 
+        return (LimelightConstants.GOAL_HEIGHT - LimelightConstants.LIMELIGHT_HEIGHT - LimelightConstants.VERTICAL_GOAL_OFFSET) 
             / Math.tan(getVerticalAngle());
     }
 
@@ -54,13 +59,12 @@ public class Limelight extends SubsystemBase {
         return getDistanceFromOuter() + LimelightConstants.INNER_OUTER_GOAL_DISTANCE;
     }
 
-
     @Override
     public void periodic() {
-        if (lightOn) {
-            limelightTable.getEntry("ledMode").setNumber(3);
-        } else {
-            limelightTable.getEntry("ledMode").setNumber(1);
+        ledMode.setNumber(lightOn? 3 : 1);
+
+        if (isTargetDetected()) {
+            SmartDashboard.putNumber("distance", getDistanceFromOuter());
         }
     }
 
