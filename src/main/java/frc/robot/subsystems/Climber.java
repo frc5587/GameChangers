@@ -29,8 +29,8 @@ public class Climber extends SubsystemBase {
     /**
      * Move the climber up
      */
-    public void moveUp() {
-        climberMotor.set(ClimberConstants.CLIMBER_THROTTLE);
+    public void moveUp(double speed) {
+        climberMotor.set(speed);
     }
 
     /**

@@ -141,6 +141,10 @@ public class Drivetrain extends PIDSubsystem {
         differentialDrive.feed();
     }
 
+    public void tankLRVoltsReverse(double leftVolts, double rightVolts) {
+        this.tankLRVolts(-leftVolts, -rightVolts);
+    }
+
     /**
      * Stops the drivetrain
      */
@@ -285,6 +289,10 @@ public class Drivetrain extends PIDSubsystem {
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftVelocityMetersPerSecond(), getRightVelocityMetersPerSecond());
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeedsReverse() {
+        return new DifferentialDriveWheelSpeeds(-getLeftVelocityMetersPerSecond(), -getRightVelocityMetersPerSecond());
     }
 
     public Pose2d getClosestPoseAtTime(double time) {

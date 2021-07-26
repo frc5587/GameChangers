@@ -35,6 +35,8 @@ public class RamseteCommandWrapper extends CommandBase {
     private final Drivetrain drivetrain;
     private final Trajectory trajectory;
 
+    private boolean isReverse = false;
+
     private Command pathFollowCommand;
     private RamseteCommand ramsete;
 
@@ -50,12 +52,27 @@ public class RamseteCommandWrapper extends CommandBase {
         makeRamsete();
     }
 
+    public RamseteCommandWrapper(Drivetrain drivetrain, AutoPaths path, boolean reverse) {
+        addRequirements(drivetrain);
+
+        setReverse(reverse);
+
+        this.drivetrain = drivetrain;
+        this.trajectory = path.trajectory;
+
+        makeRamsete();
+    }
+
     public RamseteCommandWrapper(Drivetrain drivetrain, Trajectory trajectory) {
         addRequirements(drivetrain);
 
         this.drivetrain = drivetrain;
         this.trajectory = trajectory;
         makeRamsete();
+    }
+
+    public void setReverse(boolean reverse) {
+        this.isReverse = reverse;
     }
 
     public RamseteCommandWrapper(Drivetrain drivetrain, Pose2d start, List<Translation2d> path, Pose2d end) {
@@ -74,15 +91,31 @@ public class RamseteCommandWrapper extends CommandBase {
     }
 
     private void makeRamsete() {
+        if (isReverse) {
+            makeRamseteBackwards();
+        } else {
+            ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
+            new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
+                    DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
+                    DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+            DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
+            new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+            new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
+            // RamseteCommand passes volts to the callback
+            drivetrain::tankLRVolts, drivetrain);
+        }
+    }
+
+    private void makeRamseteBackwards() {
         ramsete = new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(),
         new SimpleMotorFeedforward(DrivetrainConstants.KS_VOLTS,
                 DrivetrainConstants.KV_VOLT_SECONDS_PER_METER,
                 DrivetrainConstants.KA_VOLT_SECONDS_SQUARED_PER_METER),
-        DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeeds,
+        DrivetrainConstants.DRIVETRAIN_KINEMATICS, drivetrain::getWheelSpeedsReverse,
         new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
         new PIDController(DrivetrainConstants.RAMSETE_KP_DRIVE_VEL, 0, 0),
         // RamseteCommand passes volts to the callback
-        drivetrain::tankLRVolts, drivetrain);
+        drivetrain::tankLRVoltsReverse, drivetrain);
     }
 
     // Called when the command is initially scheduled.

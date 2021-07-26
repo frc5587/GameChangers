@@ -69,14 +69,15 @@ public class Shoot extends CommandBase {
 
     public void updateShooter() {
         double distance = limelight.getDistanceFromInner();
+        shooter.setDistanceFromTarget(distance);
 
-        if (distance > 6.5) {
-            shooter.setDistanceFromTarget(.80 * distance);
-        } else if (distance > 5) {
-            shooter.setDistanceFromTarget(.80 * distance);
-        } else {
-            shooter.setDistanceFromTarget(distance);
-        }
+        // if (distance > 6.5) {
+        //     shooter.setDistanceFromTarget(.90 * distance);
+        // } else if (distance > 5) {
+        //     shooter.setDistanceFromTarget(.85 * distance);
+        // } else {
+        //     shooter.setDistanceFromTarget(distance);
+        // }
     }
 
     @Override

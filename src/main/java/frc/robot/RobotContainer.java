@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -71,6 +72,8 @@ public class RobotContainer {
     private final MoveToAllPowercells moveToAllPowercells = new MoveToAllPowercells(powercellDetector, drivetrain,
             intakeForward);
 
+    private final Command ramsete = new SequentialCommandGroup(new RamseteCommandWrapper(drivetrain, AutoPaths.straight_hopefully, true).andThen(() -> drivetrain.tankLRVolts(0, 0)));//, shoot);
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -120,13 +123,13 @@ public class RobotContainer {
         bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
 
         // climb
-        upDPad.whenActive(() -> climber.moveUp(), climber).whenInactive(() -> climber.stopClimber(), climber);
-        downDPad.whenActive(() -> climber.moveDown(), climber).whenInactive(() -> climber.stopClimber(), climber);
+        upDPad.whenActive(() -> climber.moveUp(-.5), climber).whenInactive(() -> climber.stopClimber(), climber);
+        downDPad.whenActive(() -> climber.moveUp(-1.), climber).whenInactive(() -> climber.stopClimber(), climber);
     }
 
     public Command getAutonomousCommand() {
         //* AUTO PATHS
-        return new RamseteCommandWrapper(drivetrain, AutoPaths.straight_hopefully).andThen(() -> drivetrain.tankLRVolts(0, 0));
+        return ramsete;
         
         //* GALACTIC SEARCH
         // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));
