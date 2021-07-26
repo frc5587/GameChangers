@@ -104,8 +104,8 @@ public class Drivetrain extends PIDSubsystem {
         SmartDashboard.putNumber("left enc", leftEncoder.getPosition());
         SmartDashboard.putNumber("right enc", rightEncoder.getPosition());
         SmartDashboard.putNumber("gyro", ahrs.getAngle());
-        SmartDashboard.putNumber("thing that max wants (x)", ahrs.getDisplacementX());
-        SmartDashboard.putNumber("thing that max wants (y)", ahrs.getDisplacementY());
+        SmartDashboard.putNumber("displacement (x)", ahrs.getDisplacementX());
+        SmartDashboard.putNumber("displacement (y)", ahrs.getDisplacementY());
         // System.out.println("ahrs: " + ahrs.getAngle());
         // System.out.println("lv: " + leftEncoder.getPosition() + " rv: " + rightEncoder.getPosition());
     }
@@ -139,6 +139,10 @@ public class Drivetrain extends PIDSubsystem {
         leftGroup.setVoltage(-leftVolts);
         rightGroup.setVoltage(rightVolts);
         differentialDrive.feed();
+    }
+
+    public void tankLRVoltsReverse(double leftVolts, double rightVolts) {
+        this.tankLRVolts(-leftVolts, -rightVolts);
     }
 
     /**
@@ -280,12 +284,15 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public Pose2d getPose() {
-        // var val = ; 
         return odometry.getPoseMeters();
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftVelocityMetersPerSecond(), getRightVelocityMetersPerSecond());
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeedsReverse() {
+        return new DifferentialDriveWheelSpeeds(-getLeftVelocityMetersPerSecond(), -getRightVelocityMetersPerSecond());
     }
 
     public Pose2d getClosestPoseAtTime(double time) {
@@ -379,8 +386,6 @@ public class Drivetrain extends PIDSubsystem {
         var translation = odometry.getPoseMeters().getTranslation();
         SmartDashboard.putNumber("tx", translation.getX());
         SmartDashboard.putNumber("ty", translation.getY());
-        System.out.println("" + getLeftPositionMeters() + "   " + getRightPositionMeters());
-        // SmartDashboard.putNumber("angle", odo
 
         // Log the pose
         poseHistory.put(Timer.getFPGATimestamp(), getPose());

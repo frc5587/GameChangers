@@ -3,8 +3,6 @@
         {
             "artifactId": "SparkMax-cpp",
             "binaryPlatforms": [
-                "windowsx86-64",
-                "windowsx86",
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",
@@ -21,8 +19,6 @@
         {
             "artifactId": "SparkMax-driver",
             "binaryPlatforms": [
-                "windowsx86-64",
-                "windowsx86",
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",
@@ -52,8 +48,6 @@
             "isJar": false,
             "skipInvalidPlatforms": true,
             "validPlatforms": [
-                "windowsx86-64",
-                "windowsx86",
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",

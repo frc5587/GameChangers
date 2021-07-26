@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.LimelightConstants;
 
 /**
@@ -62,6 +62,10 @@ public class Limelight extends SubsystemBase {
     @Override
     public void periodic() {
         ledMode.setNumber(lightOn? 3 : 1);
+
+        if (isTargetDetected()) {
+            SmartDashboard.putNumber("distance", getDistanceFromOuter());
+        }
     }
 
     public void turnOn() {

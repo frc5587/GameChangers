@@ -9,7 +9,8 @@ public class IntakePistons extends SubsystemBase {
     private DoubleSolenoid piston1 = new DoubleSolenoid(IntakeConstants.PISTON_PORTS[0], IntakeConstants.PISTON_PORTS[1]);
 
     public IntakePistons() {
-        extend();
+        // extend();
+        retract();
     }
 
     public void extend() {
