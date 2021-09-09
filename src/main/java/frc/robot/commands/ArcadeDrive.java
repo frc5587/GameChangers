@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class ArcadeDrive extends CommandBase {
@@ -25,8 +26,8 @@ public class ArcadeDrive extends CommandBase {
 
     @Override
     public void execute() {
-        var throttle = throttleSupplier.getAsDouble();
-        var curve = curveSupplier.getAsDouble();
+        var throttle = throttleSupplier.getAsDouble() * Constants.DrivetrainConstants.DRIVETRAIN_SPEED;
+        var curve = curveSupplier.getAsDouble() * Constants.DrivetrainConstants.DRIVETRAIN_SPEED;
         drivetrain.arcadeDrive(throttle, curve);
     }
 

@@ -52,25 +52,25 @@ import frc.robot.subsystems.IntakePistons;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Shooter shooter = new Shooter();
-    private final Limelight limelight = new Limelight();
-    private final PowercellDetector powercellDetector = new PowercellDetector();
+    // private final Limelight limelight = new Limelight();
+    // private final PowercellDetector powercellDetector = new PowercellDetector();
     private final Drivetrain drivetrain = new Drivetrain();
-    private final Intake intake = new Intake();
-    private final IntakePistons intakePistons = new IntakePistons();
+    // private final Intake intake = new Intake();
+    // private final IntakePistons intakePistons = new IntakePistons();
     private final Conveyor conveyor = new Conveyor();
-    private final Climber climber = new Climber();
+    // private final Climber climber = new Climber();
 
     private final DeadbandJoystick joystick = new DeadbandJoystick(0, 1.5);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
-    private final LimelightCentering limelightCentering = new LimelightCentering(drivetrain, limelight);
-    private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering, drivetrain);
-    private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
-    private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
-    private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
-    private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
-    private final MoveToAllPowercells moveToAllPowercells = new MoveToAllPowercells(powercellDetector, drivetrain,
-            intakeForward);
+    // private final LimelightCentering limelightCentering = new LimelightCentering(drivetrain, limelight);
+    // private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering, drivetrain);
+    // private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
+    // private final IntakeForward intakeForward = new IntakeForward(intake, intakePistons, conveyor);
+    // private final IntakeBackward intakeBackward = new IntakeBackward(intake, conveyor);
+    // private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
+    // private final MoveToAllPowercells moveToAllPowercells = new MoveToAllPowercells(powercellDetector, drivetrain,
+            // intakeForward);
 
     private final Command ramsete = new SequentialCommandGroup(new RamseteCommandWrapper(drivetrain, AutoPaths.straight_hopefully, true).andThen(() -> drivetrain.tankLRVolts(0, 0)));//, shoot);
 
@@ -90,7 +90,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getXCurveDampened()));
-        shooter.setDefaultCommand(simpleShoot);
+        // shooter.setDefaultCommand(simpleShoot);
 
         JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
         JoystickButton joystickThumb = new JoystickButton(joystick, Joystick.ButtonType.kTop.value);
@@ -110,21 +110,21 @@ public class RobotContainer {
         // joystickTrigger.whileActiveContinuous(moveToAllPowercells);
 
         // shooting
-        aButton.whileActiveContinuous(shoot);
+        // aButton.whileActiveContinuous(shoot);
         // aButton.whileActiveContinuous(() -> {shooter.setThrottle(1);}, shooter);
-        rightTrigger.whileActiveContinuous(limelightCentering);
+        // rightTrigger.whileActiveContinuous(limelightCentering);
 
         // intake pistons
-        rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
-        rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
+        // rightBumper.and(leftTrigger.negate()).whenActive(intakePistons::extend, intakePistons);
+        // rightBumper.and(leftTrigger).whenActive(intakePistons::retract, intakePistons);
 
         // moving intake
-        bButton.and(leftTrigger.negate()).whileActiveContinuous(intakeForward);
-        bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
+        // bButton.and(leftTrigger.negate()).whileActiveContinuous(intakeForward);
+        // bButton.and(leftTrigger).whileActiveContinuous(intakeBackward);
 
         // climb
-        upDPad.whenActive(() -> climber.moveUp(-.5), climber).whenInactive(() -> climber.stopClimber(), climber);
-        downDPad.whenActive(() -> climber.moveUp(-1.), climber).whenInactive(() -> climber.stopClimber(), climber);
+        // upDPad.whenActive(() -> climber.moveUp(-.5), climber).whenInactive(() -> climber.stopClimber(), climber);
+        // downDPad.whenActive(() -> climber.moveUp(-1.), climber).whenInactive(() -> climber.stopClimber(), climber);
     }
 
     public Command getAutonomousCommand() {

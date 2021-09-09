@@ -45,6 +45,8 @@ public final class Constants {
     }
 
     public static class DrivetrainConstants {
+        public static final double DRIVETRAIN_SPEED = .5;
+        
         public static final int LEFT_LEADER = 20;
         public static final int LEFT_FOLLOWER = 21;
 
