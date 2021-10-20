@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -63,6 +65,7 @@ public class RobotContainer {
     private final DeadbandJoystick joystick = new DeadbandJoystick(0, 1.5);
     private final DeadbandXboxController xboxController = new DeadbandXboxController(1);
 
+
     // private final LimelightCentering limelightCentering = new LimelightCentering(drivetrain, limelight);
     // private final Shoot shoot = new Shoot(shooter, limelight, conveyor, intake, limelightCentering, drivetrain);
     // private final SimpleShoot simpleShoot = new SimpleShoot(shooter, () -> xboxController.getY(Hand.kRight));
@@ -71,7 +74,7 @@ public class RobotContainer {
     // private final MoveToPowercell moveToPowercell = new MoveToPowercell(powercellDetector, drivetrain, intakeForward);
     // private final MoveToAllPowercells moveToAllPowercells = new MoveToAllPowercells(powercellDetector, drivetrain,
             // intakeForward);
-
+    private ArcadeDrive arcadeDrive;
     private final Command ramsete = new SequentialCommandGroup(new RamseteCommandWrapper(drivetrain, AutoPaths.straight_hopefully, true).andThen(() -> drivetrain.tankLRVolts(0, 0)));//, shoot);
 
     /**
@@ -89,7 +92,12 @@ public class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getXCurveDampened()));
+        if (Constants.DrivetrainConstants.USE_DDR_INPUT) {
+            arcadeDrive = new ArcadeDrive(drivetrain, buttonToValue(xboxController::getYButton, xboxController::getAButton, Constants.DrivetrainConstants.DDR_FORWARD), buttonToValue(xboxController::getBButton, xboxController::getXButton, Constants.DrivetrainConstants.DDR_TURNING));
+        } else {
+            arcadeDrive = new ArcadeDrive(drivetrain, joystick::getY, () -> -joystick.getXCurveDampened());
+        }
+        drivetrain.setDefaultCommand(arcadeDrive);
         // shooter.setDefaultCommand(simpleShoot);
 
         JoystickButton joystickTrigger = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
@@ -133,5 +141,13 @@ public class RobotContainer {
         
         //* GALACTIC SEARCH
         // return moveToAllPowercells.endAt(new Pose2d(9, 2, new Rotation2d(0)));
+    }
+
+    private static DoubleSupplier buttonToValue(BooleanSupplier pos, BooleanSupplier neg, double num) {
+        return () -> {
+          if (pos.getAsBoolean() == neg.getAsBoolean()) return 0;
+          else if (pos.getAsBoolean()) return num;
+          else return -num;
+        };
     }
 }

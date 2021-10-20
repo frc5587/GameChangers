@@ -4,12 +4,8 @@
 
 package frc.robot;
 
-import org.frc5587.lib.controllers.JRADShooterController;
 import org.frc5587.lib.controllers.UnifiedShooterController;
-import org.frc5587.lib.controllers.tunerHelpers.JRADTunerHelper;
-import org.frc5587.lib.controllers.tunerHelpers.UnifiedShooterControllerTunerHelper;
 import org.frc5587.lib.pid.FPID;
-import org.frc5587.lib.pid.UNP;
 import org.frc5587.lib.pid.PID;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -46,6 +42,11 @@ public final class Constants {
 
     public static class DrivetrainConstants {
         public static final double DRIVETRAIN_SPEED = .5;
+
+        // ddr varibles
+        public static final double DDR_FORWARD = .6;
+        public static final double DDR_TURNING = 1;
+        public static final boolean USE_DDR_INPUT = true;
         
         public static final int LEFT_LEADER = 20;
         public static final int LEFT_FOLLOWER = 21;
