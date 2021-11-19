@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import org.frc5587.lib.advanced.ObjectTracker;
+import org.frc5587.lib.utils.ObjectTracker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
